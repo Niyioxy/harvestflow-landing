@@ -83,14 +83,14 @@ const supabaseAdmin = {
   },
 
   async insertProfile(userId, churchId, adminName, email) {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/profiles`, {
-      method: "POST",
-      headers: {
-        apikey: SUPABASE_SERVICE_KEY,
-        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
-        "Content-Type": "application/json",
-        Prefer: "return=representation",
-      },
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/profiles`, {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_SERVICE_KEY,
+      Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+      "Content-Type": "application/json",
+      Prefer: "return=representation,resolution=merge-duplicates",  // ← change this line
+    },
       body: JSON.stringify({
         id: userId,
         church_id: churchId,
@@ -300,7 +300,7 @@ export default async function handler(req, res) {
       user = await supabaseAdmin.createUser(email, church_name);
     } catch (e) {
       // User may already exist — fetch existing
-      if (e.message?.includes("already") || e.message?.includes("duplicate")) {
+      if (e.message?.includes("already") || e.message?.includes("duplicate") || e.message?.includes("already registered") || e.message?.includes("User already")) {
         return res.status(409).json({
           success: false,
           error: "An account with this email already exists. Please contact us if you need help accessing it.",
