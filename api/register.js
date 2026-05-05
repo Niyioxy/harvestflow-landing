@@ -1,112 +1,333 @@
-// api/register.js - runs on harvestflow-landing.vercel.app
-const SUPABASE_URL = "https://nrmzymcechakavgyplvg.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybXp5bWNlY2hha2F2Z3lwbHZnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzE0MzUzMCwiZXhwIjoyMDg4NzE5NTMwfQ.A-C_v5A0mlRDA32iXkfv7easgSx01UXlwUSPExMRT6E";
-const RESEND_KEY   = "re_3fK1fGdg_85a9EAswq22WSMk6d1ueyK1n";
-const APP_URL      = "https://www.harvestflows.com";
-const ADMIN_EMAIL  = "adeniyi.tosin@outlook.com";
-const DEFAULT_PASS = "Harvest2026";
+// api/register.js — HarvestFlow church auto-provisioning
+// Flow:
+//   1. Validate input
+//   2. Create church record in Supabase
+//   3. Create admin user in Supabase Auth (sends magic link email via Resend)
+//   4. Create admin profile record
+//   5. Notify Adeniyi via WhatsApp
+//   6. Return success
 
-async function db(path, method = "GET", body = null) {
-  const res = await fetch(`${SUPABASE_URL}${path}`, {
-    method,
+const SUPABASE_URL = process.env.SUPABASE_URL || "https://nrmzymcechakavgyplvg.supabase.co";
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybXp5bWNlY2hha2F2Z3lwbHZnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzE0MzUzMCwiZXhwIjoyMDg4NzE5NTMwfQ.A-C_v5A0mlRDA32iXkfv7easgSx01UXlwUSPExMRT6E";
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const EBULKSMS_USERNAME = process.env.EBULKSMS_USERNAME;
+const EBULKSMS_APIKEY = process.env.EBULKSMS_APIKEY;
+
+const ADENIYI_WHATSAPP = "447823782762";// Adeniyi's number in international format
+const APP_URL = "https://www.harvestflows.com";
+const FROM_EMAIL = "HarvestFlow <adeniyi.tosin@harvestflows.com>";
+
+// ── Supabase admin helpers ─────────────────────────────────────────────────
+const supabaseAdmin = {
+  async createUser(email, churchName) {
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/admin/users`, {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        email_confirm: true, // mark as confirmed — magic link handles auth
+        user_metadata: { church_name: churchName },
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || data.error || "Failed to create user");
+    return data;
+  },
+
+  async generateMagicLink(email) {
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/admin/generate_link`, {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "magiclink",
+        email,
+        options: { redirect_to: APP_URL },
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to generate magic link");
+    return data.action_link || data.properties?.action_link;
+  },
+
+  async insertChurch(data) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/churches`, {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify({
+        name: data.church_name,
+        admin_name: data.admin_name,
+        admin_email: data.email,
+        location: data.location,
+        size: data.size || null,
+        outreaches_per_year: data.outreaches || null,
+        notes: data.notes || null,
+        status: "active",
+      }),
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.message || "Failed to create church");
+    return Array.isArray(result) ? result[0] : result;
+  },
+
+  async insertProfile(userId, churchId, adminName, email) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/profiles`, {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify({
+        id: userId,
+        church_id: churchId,
+        name: adminName,
+        email,
+        role: "admin",
+      }),
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.message || "Failed to create profile");
+    return result;
+  },
+};
+
+// ── Send welcome email via Resend ──────────────────────────────────────────
+async function sendWelcomeEmail(to, adminName, churchName, magicLink) {
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
     headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: `Bearer ${SUPABASE_KEY}`,
+      Authorization: `Bearer ${RESEND_API_KEY}`,
       "Content-Type": "application/json",
-      Prefer: "return=representation"
     },
-    body: body ? JSON.stringify(body) : null
+    body: JSON.stringify({
+      from: FROM_EMAIL,
+      to: [to],
+      subject: `Welcome to HarvestFlow — Your church workspace is ready`,
+      html: `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background:#040C18;font-family:'DM Sans',Arial,sans-serif;">
+  <div style="max-width:560px;margin:0 auto;padding:40px 20px;">
+
+    <!-- Logo -->
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="display:inline-flex;align-items:center;gap:10px;">
+        <div style="width:40px;height:40px;background:rgba(232,160,32,0.1);border-radius:50%;
+          display:flex;align-items:center;justify-content:center;border:1px solid rgba(232,160,32,0.3);">
+          <div style="width:0;height:0;border-left:8px solid transparent;
+            border-right:8px solid transparent;border-bottom:14px solid #E8A020;
+            margin-top:-3px;"></div>
+        </div>
+        <span style="font-size:22px;font-weight:800;color:#E8A020;font-family:Georgia,serif;">HarvestFlow</span>
+      </div>
+    </div>
+
+    <!-- Card -->
+    <div style="background:#0D1526;border:1px solid #1A2540;border-radius:20px;padding:40px;
+      box-shadow:0 40px 80px rgba(0,0,0,0.5);">
+
+      <!-- Top accent -->
+      <div style="height:2px;background:linear-gradient(90deg,transparent,#E8A020,transparent);
+        margin:-40px -40px 32px;border-radius:20px 20px 0 0;"></div>
+
+      <h1 style="font-family:Georgia,serif;font-size:26px;font-weight:800;
+        color:#F1F5F9;margin:0 0 8px;line-height:1.2;">
+        Welcome to HarvestFlow, ${adminName}!
+      </h1>
+      <p style="font-size:14px;color:#475569;margin:0 0 28px;">
+        Your workspace for <strong style="color:#E8A020">${churchName}</strong> is ready.
+      </p>
+
+      <p style="font-size:14px;color:#94A3B8;line-height:1.7;margin:0 0 28px;">
+        Every soul that responds at your outreach deserves to be followed up, discipled,
+        and retained. HarvestFlow is your system to make sure none of them are forgotten.
+      </p>
+
+      <!-- CTA Button -->
+      <div style="text-align:center;margin:32px 0;">
+        <a href="${magicLink}"
+          style="display:inline-block;background:#E8A020;color:#000;
+          font-size:15px;font-weight:700;padding:16px 40px;border-radius:12px;
+          text-decoration:none;box-shadow:0 8px 32px rgba(232,160,32,0.35);">
+          Access Your Workspace →
+        </a>
+      </div>
+
+      <p style="font-size:12px;color:#334155;text-align:center;margin:0 0 28px;">
+        This link will log you in automatically. It expires in 24 hours.<br>
+        After logging in, you can set a password from your account settings.
+      </p>
+
+      <!-- Divider -->
+      <div style="height:1px;background:#1A2540;margin:28px 0;"></div>
+
+      <!-- Getting started steps -->
+      <h3 style="font-family:Georgia,serif;font-size:16px;font-weight:700;
+        color:#F1F5F9;margin:0 0 16px;">Getting started</h3>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(232,160,32,0.1);
+            border:1px solid rgba(232,160,32,0.2);display:flex;align-items:center;
+            justify-content:center;font-size:11px;font-weight:800;color:#E8A020;flex-shrink:0;">1</div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#E2E8F0;">Add your outreach event</div>
+            <div style="font-size:12px;color:#475569;">Go to Outreaches → Add Crusade</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(232,160,32,0.1);
+            border:1px solid rgba(232,160,32,0.2);display:flex;align-items:center;
+            justify-content:center;font-size:11px;font-weight:800;color:#E8A020;flex-shrink:0;">2</div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#E2E8F0;">Register your first convert</div>
+            <div style="font-size:12px;color:#475569;">Use voice registration or fill the form manually</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(232,160,32,0.1);
+            border:1px solid rgba(232,160,32,0.2);display:flex;align-items:center;
+            justify-content:center;font-size:11px;font-weight:800;color:#E8A020;flex-shrink:0;">3</div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#E2E8F0;">Add your follow-up workers</div>
+            <div style="font-size:12px;color:#475569;">Contact us and we'll add your team members</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div style="height:1px;background:#1A2540;margin:28px 0;"></div>
+
+      <p style="font-size:13px;color:#475569;line-height:1.7;margin:0;">
+        Need help? Reply to this email or WhatsApp Adeniyi directly at
+        <a href="https://wa.me/447823782762" style="color:#E8A020;text-decoration:none;">+44 7823 782762</a>.
+        We're here to make sure your church gets the most out of HarvestFlow.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align:center;margin-top:24px;">
+      <p style="font-size:11px;color:#1E2D45;font-style:italic;margin:0;">
+        HarvestFlow · Sow the seed. Track the growth. · © 2026
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+      `,
+    }),
   });
+
   const data = await res.json();
-  if (!res.ok) throw new Error(JSON.stringify(data));
+  if (!res.ok) throw new Error(data.message || "Failed to send welcome email");
   return data;
 }
 
-async function sendEmail(to, subject, html) {
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${RESEND_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from: "HarvestFlow <onboarding@resend.dev>", to, subject, html })
-  });
-  return res.json();
-}
-
-export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  if (req.method === "OPTIONS") return res.status(200).end();
-  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+// ── Notify Adeniyi via WhatsApp ────────────────────────────────────────────
+async function notifyAdeniyi(churchName, adminName, email, location, size) {
+  const message =
+    `🎉 New HarvestFlow Registration!\n\n` +
+    `Church: ${churchName}\n` +
+    `Admin: ${adminName}\n` +
+    `Email: ${email}\n` +
+    `Location: ${location}\n` +
+    `Size: ${size || "Not specified"}\n\n` +
+    `Workspace has been auto-provisioned. Welcome email sent.`;
 
   try {
-    const { church_name, admin_name, email, phone, location, size, outreaches, notes } = req.body;
+    await fetch("https://api.ebulksms.com/sendwhatsapp.json", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        WA: {
+          auth: { username: EBULKSMS_USERNAME, apikey: EBULKSMS_APIKEY },
+          message: { subject: "New Registration", messagetext: message },
+          recipients: [ADENIYI_WHATSAPP],
+        },
+      }),
+    });
+  } catch (e) {
+    // Non-fatal — don't fail the registration if notification fails
+    console.error("WhatsApp notify error:", e.message);
+  }
+}
 
-    if (!church_name || !email || !admin_name) {
-      return res.status(400).json({ error: "Missing required fields" });
+// ── Main handler ───────────────────────────────────────────────────────────
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  const { church_name, admin_name, phone, email, location, size, outreaches, notes } = req.body || {};
+
+  // Validate required fields
+  if (!church_name || !admin_name || !email || !location || !phone) {
+    return res.status(400).json({ success: false, error: "Please fill in all required fields." });
+  }
+
+  // Basic email check
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ success: false, error: "Please enter a valid email address." });
+  }
+
+  try {
+    // 1. Create church record
+    const church = await supabaseAdmin.insertChurch({
+      church_name, admin_name, email, location, size, outreaches, notes,
+    });
+
+    // 2. Create admin user in Supabase Auth
+    let user;
+    try {
+      user = await supabaseAdmin.createUser(email, church_name);
+    } catch (e) {
+      // User may already exist — fetch existing
+      if (e.message?.includes("already") || e.message?.includes("duplicate")) {
+        return res.status(409).json({
+          success: false,
+          error: "An account with this email already exists. Please contact us if you need help accessing it.",
+        });
+      }
+      throw e;
     }
 
-    // 1. Create church
-    const [church] = await db("/rest/v1/churches", "POST", {
-      name: church_name, location: location || "",
-      admin_email: email, admin_name, phone: phone || "",
-      size: size || "", status: "active"
-    });
+    // 3. Create profile record
+    await supabaseAdmin.insertProfile(user.id, church.id, admin_name, email);
 
-    // 2. Create auth user
-    const authRes = await fetch(`${SUPABASE_URL}/auth/v1/admin/users`, {
-      method: "POST",
-      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password: DEFAULT_PASS, email_confirm: true, user_metadata: { name: admin_name } })
-    });
-    const authData = await authRes.json();
-    if (!authRes.ok) throw new Error(`Auth: ${JSON.stringify(authData)}`);
+    // 4. Generate magic link
+    const magicLink = await supabaseAdmin.generateMagicLink(email);
+    if (!magicLink) throw new Error("Could not generate login link");
 
-    // 3. Update profile
-    await db(`/rest/v1/profiles?id=eq.${authData.id}`, "PATCH", {
-      name: admin_name, role: "admin", church_id: church.id
-    });
+    // 5. Send welcome email
+    await sendWelcomeEmail(email, admin_name, church_name, magicLink);
 
-    // 4. Welcome email to church
-    await sendEmail(email, `Welcome to HarvestFlow — ${church_name}`, `
-      <div style="font-family:sans-serif;max-width:540px;margin:0 auto;background:#040c18;color:#f1f5f9;padding:36px;border-radius:14px">
-        <h1 style="color:#E8A020;text-align:center">🌾 HarvestFlow</h1>
-        <p style="color:#94a3b8;text-align:center;margin-bottom:28px;font-style:italic">Sow the seed. Track the growth.</p>
-        <h2>Welcome, ${admin_name}! 👋</h2>
-        <p style="color:#94a3b8;margin:12px 0 24px">Your workspace for <strong style="color:#f1f5f9">${church_name}</strong> is ready.</p>
-        <div style="background:#0d1526;border:1px solid #1a2540;border-radius:10px;padding:20px;margin-bottom:20px">
-          <p style="margin:0 0 12px;font-size:13px;color:#475569;text-transform:uppercase;letter-spacing:.05em">Your Login Details</p>
-          <p style="margin:6px 0"><strong>App:</strong> <a href="${APP_URL}" style="color:#E8A020">${APP_URL}</a></p>
-          <p style="margin:6px 0"><strong>Email:</strong> ${email}</p>
-          <p style="margin:6px 0"><strong>Password:</strong> ${DEFAULT_PASS}</p>
-        </div>
-        <div style="background:#052e16;border:1px solid #166534;border-radius:8px;padding:14px;margin-bottom:20px">
-          <p style="color:#4ade80;font-size:13px;margin:0">⚠️ Please change your password after your first login.</p>
-        </div>
-        <a href="${APP_URL}" style="display:block;background:#E8A020;color:#000;text-align:center;padding:13px;border-radius:10px;font-weight:700;text-decoration:none">Open HarvestFlow →</a>
-        <p style="color:#334155;font-size:11px;text-align:center;margin-top:20px">Need help? Contact ${ADMIN_EMAIL}</p>
-      </div>
-    `);
-
-    // 5. Notify Adeniyi
-    await sendEmail(ADMIN_EMAIL, `🌾 New Church: ${church_name}`, `
-      <div style="font-family:sans-serif;max-width:460px">
-        <h2>New Church Registration</h2>
-        <p><strong>Church:</strong> ${church_name}</p>
-        <p><strong>Admin:</strong> ${admin_name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Location:</strong> ${location}</p>
-        <p><strong>Size:</strong> ${size}</p>
-        <p><strong>Outreaches/yr:</strong> ${outreaches}</p>
-        <p><strong>Notes:</strong> ${notes || "—"}</p>
-        <p style="color:#666;font-size:12px">Church ID: ${church.id}</p>
-      </div>
-    `);
+    // 6. Notify Adeniyi (non-blocking)
+    notifyAdeniyi(church_name, admin_name, email, location, size);
 
     return res.status(200).json({ success: true });
-
   } catch (error) {
-    console.error("Registration error:", error.message);
-    return res.status(500).json({ success: false, error: error.message, stack: error.stack });
+    console.error("Registration error:", error);
+    return res.status(500).json({
+      success: false,
+      error: "Something went wrong. Please email adeniyi.tosin@harvestflows.com directly.",
+    });
   }
 }
