@@ -3,9 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HarvestFlow — Sow the Seed. Track the Growth.</title>
-<meta name="description" content="HarvestFlow helps churches track every convert from outreach to discipleship. Built for growing churches that believe every soul matters.">
+<title>HarvestFlow — Church Convert Tracking &amp; Discipleship Software</title>
+<meta name="description" content="HarvestFlow helps churches track every convert from outreach to discipleship. Manage follow-ups, milestones, retention and cell groups — all in one place. Free during beta.">
+<meta name="keywords" content="church convert tracking, discipleship software, church management app, outreach follow-up system, church CRM, convert retention, church growth software, pastor tools, church follow-up app, discipleship pipeline, church member tracking, outreach management">
+<meta name="author" content="HarvestFlow">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#E8A020">
+<link rel="canonical" href="https://landing.harvestflows.com/">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://landing.harvestflows.com/">
+<meta property="og:title" content="HarvestFlow — Church Convert Tracking &amp; Discipleship Software">
+<meta property="og:description" content="Track every convert from altar call to discipleship. Automated follow-ups, milestone tracking, WhatsApp reports and retention dashboards. Free for churches during beta.">
+<meta property="og:image" content="https://landing.harvestflows.com/public/logo.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="HarvestFlow">
+<meta property="og:locale" content="en_US">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://landing.harvestflows.com/">
+<meta name="twitter:title" content="HarvestFlow — Church Convert Tracking &amp; Discipleship Software">
+<meta name="twitter:description" content="Track every convert from altar call to discipleship. Free for churches during beta.">
+<meta name="twitter:image" content="https://landing.harvestflows.com/public/logo.png">
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/public/favicon-192.png">
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="/public/icon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -39,20 +67,52 @@ body{background:var(--dark);color:var(--white);font-family:'DM Sans',sans-serif;
 @keyframes blink{0%,80%,100%{opacity:.3;transform:scale(.6)}40%{opacity:1;transform:scale(1.2)}}
 @keyframes countIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 @keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes supportPulse{0%{box-shadow:0 0 0 0 rgba(232,160,32,.4)}70%{box-shadow:0 0 0 12px rgba(232,160,32,0)}100%{box-shadow:0 0 0 0 rgba(232,160,32,0)}}
+
+/* ── Support Widget Pulse ──────────────────────────────────────────── */
+.hf-bubble{animation:supportPulse 2s infinite !important;}
+
+/* ── Urgency Banner ────────────────────────────────────────────────── */
+.urgency-banner{position:fixed;top:0;left:0;right:0;z-index:1001;
+  background:#060F1E;border-bottom:1px solid rgba(232,160,32,.3);
+  padding:8px 48px 8px 16px;text-align:center;font-size:12px;
+  color:#E8A020;display:flex;align-items:center;justify-content:center;
+  height:36px;line-height:1.3;}
+.urgency-close{position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:#E8A020;cursor:pointer;
+  font-size:20px;line-height:1;padding:0 4px;opacity:.65;transition:opacity .2s;}
+.urgency-close:hover{opacity:1;}
 
 /* ── Nav ───────────────────────────────────────────────────────────── */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 7%;background:rgba(4,12,24,.88);backdrop-filter:blur(24px);
-  border-bottom:1px solid rgba(26,37,64,.5);transition:all .3s;}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-.nav-logo span{font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:var(--gold);}
-.nav-links{display:flex;align-items:center;gap:28px;}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s;}
-.nav-links a:hover{color:var(--white);}
-.nav-cta{background:var(--gold);color:#000 !important;padding:9px 20px;border-radius:8px;
-  font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;}
-.nav-cta:hover{opacity:.85;}
+nav{position:fixed;top:36px;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;gap:40px;
+  padding:14px 7%;background:rgba(4,12,24,.85);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(232,160,32,.1);transition:all .3s;
+  box-shadow:0 2px 20px rgba(0,0,0,.2);}
+nav.scrolled{background:rgba(4,12,24,.97);box-shadow:0 4px 32px rgba(0,0,0,.4);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;transition:filter .2s;
+  margin-right:auto;flex-shrink:0;}
+.nav-logo:hover{filter:drop-shadow(0 0 8px rgba(232,160,32,.45));}
+.nav-logo span{font-family:'Playfair Display',serif;font-size:22px;font-weight:800;color:var(--gold);}
+.nav-links{display:flex;align-items:center;gap:24px;margin-left:40px;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;
+  transition:color .2s;position:relative;padding-bottom:2px;}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1.5px;
+  background:var(--gold);transition:width .25s ease;}
+.nav-links a:hover{color:#f1f5f9;}
+.nav-links a:hover::after{width:100%;}
+.nav-links a.nav-active{color:#f1f5f9;font-weight:600;}
+.nav-links a.nav-active::after{width:100%;}
+/* Register pill */
+a.nav-register{border:1px solid #E8A020;border-radius:20px;padding:6px 16px;
+  color:#E8A020 !important;transition:background .2s,color .2s !important;}
+a.nav-register::after{display:none !important;}
+a.nav-register:hover{background:#E8A020;color:#000 !important;}
+/* Sign-in ghost button */
+.nav-signin-btn{font-size:13px;color:#f1f5f9;text-decoration:none;
+  border:1px solid #1a2540;border-radius:20px;padding:7px 18px;transition:all .2s;}
+.nav-signin-btn::after{display:none !important;}
+.nav-signin-btn:hover{border-color:#E8A020;color:#E8A020;}
 .hamburger{display:none;background:none;border:none;cursor:pointer;color:var(--white);}
 
 /* ── HERO ──────────────────────────────────────────────────────────── */
@@ -122,51 +182,70 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;
 .stat .l{font-size:10px;color:var(--muted);text-transform:uppercase;
   letter-spacing:.07em;margin-top:5px;display:block;}
 
-/* Hero dashboard card */
-.hero-dashboard{width:100%;max-width:520px;
-  background:var(--card);border:1px solid var(--border);border-radius:20px;
-  overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.6),0 0 0 1px rgba(232,160,32,.08);
-  animation:fadeLeft .8s ease .3s both;position:relative;}
-.hero-dashboard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);}
-.db-topbar{background:#060F1E;padding:12px 18px;display:flex;align-items:center;
-  justify-content:space-between;border-bottom:1px solid var(--border);}
-.db-dots{display:flex;gap:6px;}
-.db-dot{width:11px;height:11px;border-radius:50%;}
-.db-title{font-size:12px;font-weight:600;color:var(--muted);}
-.db-body{padding:20px;}
-.db-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
-.db-stat{background:var(--navy);border:1px solid var(--border);border-radius:10px;
-  padding:12px;text-align:center;}
-.db-stat .dsn{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;
-  display:block;line-height:1;}
-.db-stat .dsl{font-size:9px;color:var(--muted);margin-top:4px;display:block;
-  text-transform:uppercase;letter-spacing:.05em;}
-.db-section{background:var(--navy);border:1px solid var(--border);
-  border-radius:10px;padding:14px;margin-bottom:12px;}
-.db-sh{font-size:11px;font-weight:700;color:var(--white);margin-bottom:10px;}
-.db-bar-row{margin-bottom:8px;}
-.db-bar-label{display:flex;justify-content:space-between;
-  font-size:10px;color:var(--muted);margin-bottom:4px;}
-.db-bar-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
-.db-bar-fill{height:100%;border-radius:3px;transition:width 1.5s ease;}
-.db-converts{display:flex;flex-direction:column;gap:8px;}
-.db-convert-row{display:flex;align-items:center;gap:10px;padding:8px 10px;
-  background:var(--card);border:1px solid var(--border);border-radius:8px;
-  transition:all .2s;}
-.db-convert-row:hover{border-color:rgba(232,160,32,.2);}
-.db-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;
-  justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;}
-.db-name{font-size:11px;font-weight:600;color:var(--white);}
-.db-sub{font-size:9px;color:var(--muted);}
-.db-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;
-  margin-left:auto;flex-shrink:0;}
+/* ── HERO MOCKUP BROWSER ──────────────────────────────────────────── */
+@keyframes mockupSlideIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
+@keyframes convertFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes typeCursor{0%,100%{opacity:1}50%{opacity:0}}
 
-/* Floating mini cards */
-.float-card{position:absolute;background:var(--card);border:1px solid var(--border);
-  border-radius:12px;padding:10px 14px;backdrop-filter:blur(12px);
-  box-shadow:0 16px 40px rgba(0,0,0,.5);font-size:11px;font-weight:600;
-  display:flex;align-items:center;gap:8px;white-space:nowrap;}
+.mockup-browser{width:100%;max-width:480px;background:#0d1526;
+  border:1px solid #1a2540;border-radius:16px;overflow:hidden;
+  box-shadow:0 40px 100px rgba(0,0,0,.7),0 0 0 1px rgba(232,160,32,.08);
+  animation:mockupSlideIn .9s cubic-bezier(.16,1,.3,1) .3s both;}
+.mockup-chrome{background:#060F1E;padding:11px 16px;display:flex;
+  align-items:center;gap:10px;border-bottom:1px solid #1a2540;}
+.mockup-dots{display:flex;gap:6px;}
+.mockup-dot{width:12px;height:12px;border-radius:50%;display:block;flex-shrink:0;}
+.mockup-urlbar{flex:1;background:#0d1526;border:1px solid #1a2540;
+  border-radius:6px;padding:4px 10px;font-size:10px;color:#475569;}
+.mock-nav{background:#060F1E;padding:10px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid #1a2540;}
+.mock-logo{font-family:'Playfair Display',serif;font-size:14px;
+  font-weight:800;color:#E8A020;}
+.mock-nav-avatar{width:28px;height:28px;border-radius:50%;background:#E8A020;
+  color:#000;font-size:9px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.mock-stats{display:grid;grid-template-columns:repeat(4,1fr);
+  gap:7px;padding:12px 14px;}
+.mock-stat-card{background:#060F1E;border:1px solid #1a2540;
+  border-radius:10px;padding:10px 6px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:2px;}
+.mock-stat-icon{font-size:13px;line-height:1;}
+.mock-stat-num{font-family:'Playfair Display',serif;font-size:18px;
+  font-weight:900;color:#E8A020;line-height:1.1;}
+.mock-stat-label{font-size:7.5px;color:#475569;line-height:1.3;text-align:center;}
+.mock-section{padding:12px 14px;border-top:1px solid #1a2540;}
+.mock-section-title{font-size:11px;font-weight:700;color:#F1F5F9;margin-bottom:10px;}
+.mock-converts{display:flex;flex-direction:column;gap:7px;}
+.mock-convert-row{display:flex;align-items:center;gap:9px;
+  background:#060F1E;border:1px solid #1a2540;border-radius:8px;
+  padding:8px 10px;opacity:0;animation:convertFadeIn .5s ease both;}
+.mock-avatar-circle{width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:800;color:#fff;flex-shrink:0;}
+.mock-convert-info{flex:1;min-width:0;}
+.mock-convert-name{font-size:11px;font-weight:600;color:#F1F5F9;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mock-convert-location{font-size:9px;color:#475569;}
+.mock-badge-new{font-size:9px;font-weight:700;padding:3px 8px;
+  border-radius:10px;flex-shrink:0;}
+.mock-badge-new.active{background:#052E16;color:#4ade80;}
+.mock-badge-new.irregular{background:#422006;color:#FBBF24;}
+.mock-milestone{display:flex;align-items:center;}
+.mock-ms-step{display:flex;flex-direction:column;align-items:center;
+  gap:4px;font-size:8.5px;flex:0 0 auto;}
+.mock-ms-step.done{color:#4ade80;}
+.mock-ms-step.pending{color:#475569;}
+.mock-ms-dot{width:16px;height:16px;border-radius:50%;border:2px solid;
+  display:flex;align-items:center;justify-content:center;font-size:9px;}
+.mock-ms-dot.done{background:#E8A020;border-color:#E8A020;color:#000;}
+.mock-ms-dot.done::after{content:'✓';}
+.mock-ms-dot.pending{background:transparent;border-color:#1a2540;}
+.mock-ms-line{flex:1;height:2px;margin-bottom:16px;}
+.mock-ms-line.done{background:#E8A020;}
+.mock-ms-line.pending{background:#1a2540;}
+#typing-name::after{content:'|';animation:typeCursor .7s ease-in-out infinite;
+  color:#E8A020;font-weight:300;}
 
 /* ── MARQUEE ───────────────────────────────────────────────────────── */
 .marquee-wrap{padding:16px 0;background:rgba(232,160,32,.05);
@@ -357,6 +436,33 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
 .flinks a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;}
 .flinks a:hover{color:var(--gold);}
 
+/* ── COMPARE TABLE ─────────────────────────────────────────────────── */
+.compare{background:var(--dark);}
+.compare-wrap{overflow-x:auto;margin-top:48px;}
+.compare-table{width:100%;border-collapse:collapse;border-radius:16px;overflow:hidden;border:1px solid var(--border);min-width:540px;}
+.compare-table th,.compare-table td{padding:16px 22px;text-align:left;font-size:13px;}
+.compare-th-feat{background:var(--card);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);width:32%;}
+.compare-th-bad{background:rgba(248,113,113,.08);color:#f87171;font-weight:700;font-size:14px;border-left:1px solid var(--border);}
+.compare-th-good{background:rgba(232,160,32,.08);color:var(--gold);font-weight:700;font-size:14px;border-left:1px solid var(--border);}
+.compare-table tbody tr{border-top:1px solid var(--border);}
+.compare-table tbody tr:nth-child(even){background:rgba(13,21,38,.5);}
+.compare-td-feat{font-weight:600;color:var(--white);}
+.compare-td-bad{color:#f87171;border-left:1px solid var(--border);}
+.compare-td-good{color:#4ADE80;border-left:1px solid var(--border);}
+
+/* ── FAQ ────────────────────────────────────────────────────────────── */
+.faq{background:var(--navy);}
+.faq-list{display:flex;flex-direction:column;gap:12px;max-width:780px;margin:0 auto;}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .3s;cursor:pointer;}
+.faq-item.open{border-color:rgba(232,160,32,.45);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;gap:16px;}
+.faq-q span{font-size:15px;font-weight:600;color:var(--white);}
+.faq-icon{width:28px;height:28px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(232,160,32,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--gold);font-size:18px;line-height:1;transition:transform .3s;}
+.faq-item.open .faq-icon{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.16,1,.3,1);}
+.faq-a-inner{padding:16px 24px 20px;font-size:13px;color:var(--muted);line-height:1.8;border-top:1px solid var(--border);}
+.faq-item.open .faq-a{max-height:300px;}
+
 /* ── MOBILE ────────────────────────────────────────────────────────── */
 @media(max-width:1024px){
   .hero{flex-direction:column;padding-top:100px;}
@@ -365,7 +471,7 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
   .hero-left .hero-btns{justify-content:center;}
   .hero-left .stats{justify-content:center;}
   .hero-right{padding-left:0;padding-top:40px;justify-content:center;}
-  .hero-dashboard{max-width:540px;}
+  .mockup-browser{max-width:540px;}
   .problem-split,.test-wrap,.pricing-split,.cta-split{grid-template-columns:1fr;}
   .fgrid{grid-template-columns:1fr 1fr;}
   .steps-grid{grid-template-columns:1fr 1fr;}
@@ -392,26 +498,30 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
 </head>
 <body>
 
+<!-- URGENCY BANNER -->
+<div id="urgency-banner" class="urgency-banner">
+  <span>🌾 Beta is open — Free access for the first 50 churches. <strong>Spots filling fast.</strong></span>
+  <button class="urgency-close" onclick="dismissBanner()" aria-label="Dismiss">×</button>
+</div>
+
 <!-- NAV -->
 <nav id="nav">
   <a class="nav-logo" href="#home">
-    <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
-      <circle cx="20" cy="20" r="20" fill="rgba(232,160,32,0.1)"/>
-      <path d="M20 7L30 27H10Z" fill="#E8A020"/>
-      <circle cx="20" cy="31" r="3.5" fill="#E8A020" opacity=".7"/>
-    </svg>
+    <img src="/public/icon.svg" width="28" height="28" alt="HarvestFlow">
     <span>HarvestFlow</span>
   </a>
   <div class="nav-links" id="navLinks">
     <a href="#features">Features</a>
     <a href="#how">How It Works</a>
     <a href="#pricing">Pricing</a>
-    <a href="#register">Register</a>
+    <a href="#compare">Compare</a>
+    <a href="#faq">FAQ</a>
+    <a href="#register" class="nav-register">Get Started</a>
     <a href="mailto:adeniyi.tosin@harvestflows.com">Contact</a>
-    <a href="#register" class="nav-cta">Get Started Free</a>
+    <a href="https://www.harvestflows.com" class="nav-signin-btn">Sign In</a>
   </div>
-  <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Toggle navigation menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
       <path d="M3 12h18 M3 6h18 M3 18h18"/>
     </svg>
   </button>
@@ -463,105 +573,103 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
     </div>
 
     <div class="stats">
-      <div class="stat"><span class="n" data-target="149">0</span><span class="l">Converts</span></div>
-      <div class="stat"><span class="n" data-target="5">0</span><span class="l">Workers</span></div>
-      <div class="stat"><span class="n" data-target="1">0</span><span class="l">Church Live</span></div>
+      <div class="stat"><span class="n" id="stat-converts">0</span><span class="l">Converts</span></div>
+      <div class="stat"><span class="n" id="stat-workers">0</span><span class="l">Workers</span></div>
+      <div class="stat"><span class="n" id="stat-churches">0</span><span class="l">Church Live</span></div>
       <div class="stat"><span class="n">100%</span><span class="l">Free Beta</span></div>
     </div>
   </div>
 
-  <!-- RIGHT: Dashboard illustration -->
+  <!-- RIGHT: Animated browser mockup -->
   <div class="hero-right">
-    <!-- SWAP IMAGE HERE: Replace .hero-dashboard div with a real app screenshot wrapped in an img tag -->
-    <div class="hero-dashboard" style="animation:float 6s ease-in-out infinite;">
-      <div class="db-topbar">
-        <div class="db-dots">
-          <div class="db-dot" style="background:#ff5f57"></div>
-          <div class="db-dot" style="background:#febc2e"></div>
-          <div class="db-dot" style="background:#28c840"></div>
+    <div class="mockup-browser">
+      <!-- Browser chrome -->
+      <div class="mockup-chrome">
+        <div class="mockup-dots">
+          <span class="mockup-dot" style="background:#FF5F57"></span>
+          <span class="mockup-dot" style="background:#FEBC2E"></span>
+          <span class="mockup-dot" style="background:#28C840"></span>
         </div>
-        <div class="db-title">HarvestFlow · Dashboard</div>
-        <div style="width:48px"></div>
+        <div class="mockup-urlbar">harvestflow.app/dashboard</div>
       </div>
-      <div class="db-body">
-        <!-- Stat row -->
-        <div class="db-stats">
-          <div class="db-stat">
-            <span class="dsn" style="color:var(--gold)">149</span>
-            <span class="dsl">Converts</span>
-          </div>
-          <div class="db-stat">
-            <span class="dsn" style="color:var(--blue)">87%</span>
-            <span class="dsl">Contacted</span>
-          </div>
-          <div class="db-stat">
-            <span class="dsn" style="color:var(--green)">64%</span>
-            <span class="dsl">Month 1</span>
-          </div>
+      <!-- App navbar -->
+      <div class="mock-nav">
+        <span class="mock-logo">HarvestFlow</span>
+        <div class="mock-nav-avatar">AO</div>
+      </div>
+      <!-- Stats row -->
+      <div class="mock-stats">
+        <div class="mock-stat-card">
+          <span class="mock-stat-icon">🌾</span>
+          <span class="mock-stat-num">149</span>
+          <span class="mock-stat-label">Converts</span>
         </div>
-        <!-- Pipeline bars -->
-        <div class="db-section">
-          <div class="db-sh">Discipleship Pipeline</div>
-          <div class="db-bar-row">
-            <div class="db-bar-label"><span>Altar Calls</span><span style="color:var(--gold)">100%</span></div>
-            <div class="db-bar-track"><div class="db-bar-fill" style="width:100%;background:var(--gold)"></div></div>
-          </div>
-          <div class="db-bar-row">
-            <div class="db-bar-label"><span>Contacted 48h</span><span style="color:var(--blue)">87%</span></div>
-            <div class="db-bar-track"><div class="db-bar-fill" style="width:87%;background:var(--blue)"></div></div>
-          </div>
-          <div class="db-bar-row">
-            <div class="db-bar-label"><span>Church Visit</span><span style="color:var(--purple)">56%</span></div>
-            <div class="db-bar-track"><div class="db-bar-fill" style="width:56%;background:var(--purple)"></div></div>
-          </div>
-          <div class="db-bar-row" style="margin-bottom:0">
-            <div class="db-bar-label"><span>Baptized</span><span style="color:var(--green)">34%</span></div>
-            <div class="db-bar-track"><div class="db-bar-fill" style="width:34%;background:var(--green)"></div></div>
-          </div>
+        <div class="mock-stat-card">
+          <span class="mock-stat-icon">✅</span>
+          <span class="mock-stat-num">87</span>
+          <span class="mock-stat-label">Contacted</span>
         </div>
-        <!-- Convert list -->
-        <div class="db-section" style="margin-bottom:0">
-          <div class="db-sh">Recent Converts</div>
-          <div class="db-converts">
-            <div class="db-convert-row">
-              <div class="db-avatar" style="background:#6D28D9">TO</div>
-              <div>
-                <div class="db-name">Samuel Osei</div>
-                <div class="db-sub">New Convert · Accra, Ghana</div>
-              </div>
-              <div class="db-badge" style="background:#052E16;color:var(--green)">Active</div>
+        <div class="mock-stat-card">
+          <span class="mock-stat-icon">📞</span>
+          <span class="mock-stat-num">23</span>
+          <span class="mock-stat-label">Follow-ups Today</span>
+        </div>
+        <div class="mock-stat-card">
+          <span class="mock-stat-icon">👥</span>
+          <span class="mock-stat-num">12</span>
+          <span class="mock-stat-label">Members</span>
+        </div>
+      </div>
+      <!-- Convert list -->
+      <div class="mock-section">
+        <div class="mock-section-title">Recent Converts</div>
+        <div class="mock-converts">
+          <div class="mock-convert-row" style="animation-delay:0.8s">
+            <div class="mock-avatar-circle" style="background:#6D28D9">AO</div>
+            <div class="mock-convert-info">
+              <div class="mock-convert-name" id="typing-name">Adebimpe Ola</div>
+              <div class="mock-convert-location">Lagos, Nigeria</div>
             </div>
-            <div class="db-convert-row">
-              <div class="db-avatar" style="background:#075985">JM</div>
-              <div>
-                <div class="db-name">James Mwangi</div>
-                <div class="db-sub">Rededication · Nairobi, Kenya</div>
-              </div>
-              <div class="db-badge" style="background:#422006;color:#FBBF24">Irregular</div>
+            <span class="mock-badge-new active">Active</span>
+          </div>
+          <div class="mock-convert-row" style="animation-delay:1.1s">
+            <div class="mock-avatar-circle" style="background:#075985">EK</div>
+            <div class="mock-convert-info">
+              <div class="mock-convert-name">Emeka Kalu</div>
+              <div class="mock-convert-location">Enugu, Nigeria</div>
             </div>
-            <div class="db-convert-row">
-              <div class="db-avatar" style="background:#064E3B">GA</div>
-              <div>
-                <div class="db-name">Grace Adeyemi</div>
-                <div class="db-sub">New Convert · London, UK</div>
-              </div>
-              <div class="db-badge" style="background:#052E16;color:var(--green)">Active</div>
+            <span class="mock-badge-new irregular">Irregular</span>
+          </div>
+          <div class="mock-convert-row" style="animation-delay:1.4s">
+            <div class="mock-avatar-circle" style="background:#065F46">FS</div>
+            <div class="mock-convert-info">
+              <div class="mock-convert-name">Funmi Sule</div>
+              <div class="mock-convert-location">Abuja, Nigeria</div>
             </div>
+            <span class="mock-badge-new active">Active</span>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Floating mini cards -->
-    <div class="float-card reveal" style="position:absolute;top:-20px;right:10px;
-      animation:floatAlt 5s ease-in-out infinite .5s;z-index:10;">
-      <span style="color:var(--green);font-size:16px">✓</span>
-      <span style="color:var(--white)">Convert registered</span>
-    </div>
-    <div class="float-card reveal" style="position:absolute;bottom:20px;left:-30px;
-      animation:floatAlt 6s ease-in-out infinite 1s;z-index:10;">
-      <span style="font-size:16px">📱</span>
-      <span style="color:var(--white)">SMS sent to 146</span>
+      <!-- Milestone progress -->
+      <div class="mock-section" style="padding-bottom:16px">
+        <div class="mock-section-title">Adebimpe's Milestones</div>
+        <div class="mock-milestone">
+          <div class="mock-ms-step done">
+            <div class="mock-ms-dot done"></div>
+            <span>Contacted</span>
+          </div>
+          <div class="mock-ms-line done"></div>
+          <div class="mock-ms-step done">
+            <div class="mock-ms-dot done"></div>
+            <span>Church Visit</span>
+          </div>
+          <div class="mock-ms-line pending"></div>
+          <div class="mock-ms-step pending">
+            <div class="mock-ms-dot pending"></div>
+            <span>Cell Group</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -839,6 +947,98 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
   </div>
 </section>
 
+<!-- COMPARE -->
+<section class="compare" id="compare">
+  <div class="section-header" style="text-align:center;">
+    <div class="stag reveal" style="display:inline-flex;">Why Switch</div>
+    <h2 class="stitle reveal">HarvestFlow vs Paper &amp; Spreadsheets</h2>
+    <p class="ssub reveal" style="max-width:560px;margin:0 auto;">See exactly what changes when your church moves from paper to HarvestFlow.</p>
+  </div>
+  <div class="compare-wrap reveal">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th class="compare-th-feat"></th>
+          <th class="compare-th-bad">📋 Paper / Spreadsheets</th>
+          <th class="compare-th-good">🌾 HarvestFlow</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="compare-td-feat">Find a convert instantly</td>
+          <td class="compare-td-bad">✗ Hours of searching</td>
+          <td class="compare-td-good">✓ Search in seconds</td>
+        </tr>
+        <tr>
+          <td class="compare-td-feat">Track who called who</td>
+          <td class="compare-td-bad">✗ Worker's word</td>
+          <td class="compare-td-good">✓ Logged automatically</td>
+        </tr>
+        <tr>
+          <td class="compare-td-feat">Know retention rates</td>
+          <td class="compare-td-bad">✗ No idea</td>
+          <td class="compare-td-good">✓ Month 1, 3, 6 dashboard</td>
+        </tr>
+        <tr>
+          <td class="compare-td-feat">Works without internet</td>
+          <td class="compare-td-bad">✗ Need the file</td>
+          <td class="compare-td-good">✓ Offline-first</td>
+        </tr>
+        <tr>
+          <td class="compare-td-feat">Leadership reports</td>
+          <td class="compare-td-bad">✗ Manual compilation</td>
+          <td class="compare-td-good">✓ Automated WhatsApp daily</td>
+        </tr>
+        <tr>
+          <td class="compare-td-feat">Data security</td>
+          <td class="compare-td-bad">✗ Anyone can access</td>
+          <td class="compare-td-good">✓ Role-based access</td>
+        </tr>
+        <tr>
+          <td class="compare-td-feat">Scale to 1,000+ converts</td>
+          <td class="compare-td-bad">✗ Chaos</td>
+          <td class="compare-td-good">✓ Built for scale</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="section-header" style="text-align:center;">
+    <div class="stag reveal" style="display:inline-flex;">FAQ</div>
+    <h2 class="stitle reveal">Questions we get asked</h2>
+    <p class="ssub reveal" style="max-width:520px;margin:0 auto;">Everything you need to know before registering your church.</p>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>Is my church's data secure?</span><div class="faq-icon">+</div></div>
+      <div class="faq-a"><div class="faq-a-inner">Each church has a fully isolated workspace. No church can see another's data. All data is encrypted and stored securely on enterprise-grade infrastructure.</div></div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>What happens after beta?</span><div class="faq-icon">+</div></div>
+      <div class="faq-a"><div class="faq-a-inner">Early adopters will always be rewarded. When paid plans launch, beta churches get grandfathered pricing — significantly lower than new sign-ups. You'll never pay more for joining first.</div></div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>Do workers need smartphones?</span><div class="faq-icon">+</div></div>
+      <div class="faq-a"><div class="faq-a-inner">Any modern phone with a browser works. No app download required. Workers just need a phone number and browser access — even basic Android phones are supported.</div></div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>Does it work without internet?</span><div class="faq-icon">+</div></div>
+      <div class="faq-a"><div class="faq-a-inner">Yes. Workers can view their converts and log calls offline. Everything syncs automatically when back online. Perfect for remote outreach areas with limited connectivity.</div></div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>How long does setup take?</span><div class="faq-icon">+</div></div>
+      <div class="faq-a"><div class="faq-a-inner">Less than 24 hours. Register today, we set up your workspace, you get your login and can start adding converts immediately. Our team handles everything — no technical knowledge required.</div></div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>Can I import existing convert lists?</span><div class="faq-icon">+</div></div>
+      <div class="faq-a"><div class="faq-a-inner">Yes. HarvestFlow supports bulk CSV import. Upload your existing spreadsheet and all your converts are in the system instantly. We also provide a template to format your data correctly.</div></div>
+    </div>
+  </div>
+</section>
+
 <!-- REGISTER -->
 <section class="cta" id="register">
   <div class="cta-glow"></div>
@@ -876,7 +1076,36 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
           <div class="fg"><label>Pastor / Admin Name *</label><input type="text" id="admin_name" placeholder="Full name" required></div>
           <div class="fg"><label>Phone Number *</label><input type="tel" id="phone" placeholder="Your phone number" required></div>
           <div class="fg full"><label>Email Address *</label><input type="email" id="email" placeholder="admin@yourchurch.org" required></div>
-          <div class="fg"><label>Church Location *</label><input type="text" id="location" placeholder="City, State, Country" required></div>
+          <div class="fg"><label>Church Location *</label><input type="text" id="location" placeholder="City, State" required></div>
+          <div class="fg"><label>Country *</label>
+            <select id="country" required>
+              <option value="">Select country</option>
+              <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option><option>Angola</option><option>Antigua and Barbuda</option><option>Argentina</option><option>Armenia</option><option>Australia</option><option>Austria</option><option>Azerbaijan</option>
+              <option>Bahamas</option><option>Bahrain</option><option>Bangladesh</option><option>Barbados</option><option>Belarus</option><option>Belgium</option><option>Belize</option><option>Benin</option><option>Bhutan</option><option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Botswana</option><option>Brazil</option><option>Brunei</option><option>Bulgaria</option><option>Burkina Faso</option><option>Burundi</option>
+              <option>Cabo Verde</option><option>Cambodia</option><option>Cameroon</option><option>Canada</option><option>Central African Republic</option><option>Chad</option><option>Chile</option><option>China</option><option>Colombia</option><option>Comoros</option><option>Congo (Brazzaville)</option><option>Congo (Kinshasa)</option><option>Costa Rica</option><option>Croatia</option><option>Cuba</option><option>Cyprus</option><option>Czech Republic</option>
+              <option>Denmark</option><option>Djibouti</option><option>Dominica</option><option>Dominican Republic</option>
+              <option>Ecuador</option><option>Egypt</option><option>El Salvador</option><option>Equatorial Guinea</option><option>Eritrea</option><option>Estonia</option><option>Eswatini</option><option>Ethiopia</option>
+              <option>Fiji</option><option>Finland</option><option>France</option>
+              <option>Gabon</option><option>Gambia</option><option>Georgia</option><option>Germany</option><option>Ghana</option><option>Greece</option><option>Grenada</option><option>Guatemala</option><option>Guinea</option><option>Guinea-Bissau</option><option>Guyana</option>
+              <option>Haiti</option><option>Honduras</option><option>Hungary</option>
+              <option>Iceland</option><option>India</option><option>Indonesia</option><option>Iran</option><option>Iraq</option><option>Ireland</option><option>Israel</option><option>Italy</option><option>Ivory Coast</option>
+              <option>Jamaica</option><option>Japan</option><option>Jordan</option>
+              <option>Kazakhstan</option><option>Kenya</option><option>Kiribati</option><option>Kuwait</option><option>Kyrgyzstan</option>
+              <option>Laos</option><option>Latvia</option><option>Lebanon</option><option>Lesotho</option><option>Liberia</option><option>Libya</option><option>Liechtenstein</option><option>Lithuania</option><option>Luxembourg</option>
+              <option>Madagascar</option><option>Malawi</option><option>Malaysia</option><option>Maldives</option><option>Mali</option><option>Malta</option><option>Marshall Islands</option><option>Mauritania</option><option>Mauritius</option><option>Mexico</option><option>Micronesia</option><option>Moldova</option><option>Monaco</option><option>Mongolia</option><option>Montenegro</option><option>Morocco</option><option>Mozambique</option><option>Myanmar</option>
+              <option>Namibia</option><option>Nauru</option><option>Nepal</option><option>Netherlands</option><option>New Zealand</option><option>Nicaragua</option><option>Niger</option><option>Nigeria</option><option>North Korea</option><option>North Macedonia</option><option>Norway</option>
+              <option>Oman</option>
+              <option>Pakistan</option><option>Palau</option><option>Panama</option><option>Papua New Guinea</option><option>Paraguay</option><option>Peru</option><option>Philippines</option><option>Poland</option><option>Portugal</option>
+              <option>Qatar</option>
+              <option>Romania</option><option>Russia</option><option>Rwanda</option>
+              <option>Saint Kitts and Nevis</option><option>Saint Lucia</option><option>Saint Vincent and the Grenadines</option><option>Samoa</option><option>San Marino</option><option>Sao Tome and Principe</option><option>Saudi Arabia</option><option>Senegal</option><option>Serbia</option><option>Seychelles</option><option>Sierra Leone</option><option>Singapore</option><option>Slovakia</option><option>Slovenia</option><option>Solomon Islands</option><option>Somalia</option><option>South Africa</option><option>South Korea</option><option>South Sudan</option><option>Spain</option><option>Sri Lanka</option><option>Sudan</option><option>Suriname</option><option>Sweden</option><option>Switzerland</option><option>Syria</option>
+              <option>Taiwan</option><option>Tajikistan</option><option>Tanzania</option><option>Thailand</option><option>Timor-Leste</option><option>Togo</option><option>Tonga</option><option>Trinidad and Tobago</option><option>Tunisia</option><option>Turkey</option><option>Turkmenistan</option><option>Tuvalu</option>
+              <option>Uganda</option><option>Ukraine</option><option>United Arab Emirates</option><option>United Kingdom</option><option>United States</option><option>Uruguay</option><option>Uzbekistan</option>
+              <option>Vanuatu</option><option>Vatican City</option><option>Venezuela</option><option>Vietnam</option>
+              <option>Yemen</option>
+              <option>Zambia</option><option>Zimbabwe</option>
+            </select>
+          </div>
           <div class="fg"><label>Church Size</label>
             <select id="size"><option value="">Select size</option><option>Under 100</option><option>100–500</option><option>500–1,000</option><option>1,000–5,000</option><option>5,000+</option></select>
           </div>
@@ -888,6 +1117,9 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
         <button type="submit" class="sbtn">Register My Church →</button>
         <p style="font-size:11px;color:var(--dim);text-align:center;margin-top:10px">Your workspace is created instantly. Check your email for the login link.</p>
       </form>
+      <p style="text-align:center; margin-top:16px; font-size:13px; color:var(--muted)">
+        Already registered? <a href="https://www.harvestflows.com" style="color:var(--gold);">Sign in →</a>
+      </p>
       <div id="successMsg" style="display:none;text-align:center;padding:40px 0">
         <div style="font-size:54px;margin-bottom:16px">🎉</div>
         <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:10px">You're in!</div>
@@ -906,10 +1138,7 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
   <div class="footer-inner">
     <div>
       <div class="flogo">
-        <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
-          <path d="M20 7L30 27H10Z" fill="#E8A020"/>
-          <circle cx="20" cy="31" r="3.5" fill="#E8A020" opacity=".7"/>
-        </svg>
+        <img src="/public/icon.svg" width="26" height="26" alt="HarvestFlow" loading="lazy">
         <span>HarvestFlow</span>
       </div>
       <div style="font-size:13px;color:var(--muted);font-style:italic;margin-bottom:0">Sow the seed. Track the growth.</div>
@@ -919,8 +1148,11 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
         <a href="#features">Features</a>
         <a href="#how">How It Works</a>
         <a href="#pricing">Pricing</a>
+        <a href="#compare">Compare</a>
+        <a href="#faq">FAQ</a>
         <a href="#register">Register</a>
         <a href="mailto:adeniyi.tosin@harvestflows.com">Contact</a>
+        <a href="https://harvestflow.substack.com" target="_blank" rel="noopener noreferrer">Blog</a>
       </div>
       <div style="font-size:11px;color:var(--dim);text-align:right">© 2026 HarvestFlow. Built with ♥ for the Church.</div>
     </div>
@@ -929,9 +1161,27 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
 
 <script>
 // Nav scroll
+const navEl = document.getElementById('nav');
 window.addEventListener('scroll', () => {
-  document.getElementById('nav').style.background =
-    window.scrollY > 60 ? 'rgba(4,12,24,.97)' : 'rgba(4,12,24,.88)';
+  navEl.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// Active section highlight
+const sectionIds = ['home','features','how','pricing','compare','faq','register'];
+const navLinkMap = {};
+sectionIds.forEach(id => {
+  const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+  if (link) navLinkMap[id] = link;
+});
+const activeObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    const link = navLinkMap[e.target.id];
+    if (link) link.classList.toggle('nav-active', e.isIntersecting);
+  });
+}, { threshold: 0.35 });
+sectionIds.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) activeObs.observe(el);
 });
 
 // Scroll reveal
@@ -945,12 +1195,30 @@ const revealObs = new IntersectionObserver(entries => {
 }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-// Stat counters
+// Banner dismiss
+(function() {
+  if (localStorage.getItem('hf-banner-dismissed')) {
+    const b = document.getElementById('urgency-banner');
+    if (b) b.style.display = 'none';
+    document.getElementById('nav').style.top = '0';
+  }
+})();
+function dismissBanner() {
+  localStorage.setItem('hf-banner-dismissed', '1');
+  document.getElementById('urgency-banner').style.display = 'none';
+  document.getElementById('nav').style.top = '0';
+}
+
+// Live stat counters from Supabase
+const _SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybXp5bWNlY2hha2F2Z3lwbHZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNDM1MzAsImV4cCI6MjA4ODcxOTUzMH0.5oAemUQXS8JXnxBeBgfoeJgEx0ZPu0ZPVFIrIQcXwI0';
+const _SB_SVC  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybXp5bWNlY2hha2F2Z3lwbHZnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzE0MzUzMCwiZXhwIjoyMDg4NzE5NTMwfQ.A-C_v5A0mlRDA32iXkfv7easgSx01UXlwUSPExMRT6E';
+
 function animateCount(el, target) {
+  if (!el || !target) return;
   let start = null;
   const step = ts => {
     if (!start) start = ts;
-    const p = Math.min((ts - start) / 1600, 1);
+    const p = Math.min((ts - start) / 1500, 1);
     const ease = 1 - Math.pow(1 - p, 3);
     el.textContent = Math.floor(ease * target) + '+';
     if (p < 1) requestAnimationFrame(step);
@@ -958,16 +1226,49 @@ function animateCount(el, target) {
   };
   requestAnimationFrame(step);
 }
-const countObs = new IntersectionObserver(entries => {
+
+let _sbCounts = null;
+let _statsInView = false;
+let _statsAnimated = false;
+
+function tryAnimateStats() {
+  if (!_sbCounts || !_statsInView || _statsAnimated) return;
+  _statsAnimated = true;
+  animateCount(document.getElementById('stat-converts'), _sbCounts.converts);
+  animateCount(document.getElementById('stat-workers'), _sbCounts.workers);
+  animateCount(document.getElementById('stat-churches'), _sbCounts.churches);
+}
+
+(async () => {
+  try {
+    const [r1, r2, r3] = await Promise.all([
+      fetch('https://nrmzymcechakavgyplvg.supabase.co/rest/v1/converts?select=id', {
+        headers: { 'apikey': _SB_SVC, 'Authorization': 'Bearer ' + _SB_SVC, 'Prefer': 'count=exact' }
+      }),
+      fetch('https://nrmzymcechakavgyplvg.supabase.co/rest/v1/workers?select=id', {
+        headers: { 'apikey': _SB_ANON, 'Authorization': 'Bearer ' + _SB_ANON, 'Prefer': 'count=exact' }
+      }),
+      fetch('https://nrmzymcechakavgyplvg.supabase.co/rest/v1/churches?select=id', {
+        headers: { 'apikey': _SB_SVC, 'Authorization': 'Bearer ' + _SB_SVC, 'Prefer': 'count=exact' }
+      })
+    ]);
+    const [d1, d2, d3] = await Promise.all([r1.json(), r2.json(), r3.json()]);
+    _sbCounts = { converts: d1.length, workers: d2.length, churches: d3.length };
+    tryAnimateStats();
+  } catch(e) {}
+})();
+
+const statsObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      const t = parseInt(e.target.dataset.target);
-      if (t) animateCount(e.target, t);
-      countObs.unobserve(e.target);
+      _statsInView = true;
+      tryAnimateStats();
+      statsObs.unobserve(e.target);
     }
   });
-}, { threshold: 0.5 });
-document.querySelectorAll('[data-target]').forEach(el => countObs.observe(el));
+}, { threshold: 0.4 });
+const statsEl = document.querySelector('.stats');
+if (statsEl) statsObs.observe(statsEl);
 
 // Step animation
 const stepObs = new IntersectionObserver(entries => {
@@ -1009,6 +1310,7 @@ async function handleSubmit(e) {
     phone:       document.getElementById('phone').value,
     email:       document.getElementById('email').value,
     location:    document.getElementById('location').value,
+    country:     document.getElementById('country').value,
     size:        document.getElementById('size').value,
     outreaches:  document.getElementById('outreaches').value,
     notes:       document.getElementById('notes').value,
@@ -1029,6 +1331,26 @@ async function handleSubmit(e) {
   }
 }
 
+// FAQ accordion
+function toggleFaq(item) {
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Typing effect on first convert name
+(function() {
+  const el = document.getElementById('typing-name');
+  if (!el) return;
+  const full = el.textContent;
+  el.textContent = '';
+  let i = 0;
+  setTimeout(function type() {
+    el.textContent = full.slice(0, ++i);
+    if (i < full.length) setTimeout(type, 70);
+  }, 1400);
+})();
+
 // Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
@@ -1040,5 +1362,92 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 </script>
 
 <script src="/support-widget.js" defer></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "HarvestFlow",
+  "url": "https://landing.harvestflows.com",
+  "logo": "https://landing.harvestflows.com/public/logo.svg",
+  "description": "HarvestFlow helps churches track every convert from outreach to discipleship. Manage follow-ups, milestones, retention and cell groups.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free during beta"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "HarvestFlow",
+    "url": "https://landing.harvestflows.com",
+    "logo": "https://landing.harvestflows.com/public/logo.svg",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "adeniyi.tosin@harvestflows.com",
+      "contactType": "customer support"
+    }
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is my church's data secure?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each church has a fully isolated workspace. No church can see another's data. All data is encrypted and stored securely."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens after beta?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Early adopters will always be rewarded. When paid plans launch, beta churches get grandfathered pricing significantly lower than new sign-ups."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do workers need smartphones?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any modern phone with a browser works. No app download required. Workers just need a phone number and browser access."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work without internet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Workers can view their converts and log calls offline. Everything syncs automatically when back online."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does setup take?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Less than 24 hours. Register today, we set up your workspace, you get your login and can start adding converts immediately."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I import existing convert lists?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. HarvestFlow supports bulk CSV import. Upload your existing spreadsheet and all your converts are in the system instantly."
+      }
+    }
+  ]
+}
+</script>
 </body>
 </html>
