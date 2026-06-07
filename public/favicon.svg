@@ -1,0 +1,11 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark background circle -->
+  <circle cx="16" cy="16" r="16" fill="#060f1e"/>
+  <!-- Simplified leaf (single bold shape) -->
+  <path d="M16 22 Q6 14 8 4 Q13 9 15 16Z" fill="#4ade80"/>
+  <path d="M16 18 Q26 10 24 2 Q19 7 17 14Z" fill="#22c55e"/>
+  <!-- Wave arc -->
+  <path d="M8 24 Q12 20 16 22 Q20 24 24 20" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <!-- Center dot gold -->
+  <circle cx="16" cy="22" r="2.5" fill="#E8A020"/>
+</svg>
