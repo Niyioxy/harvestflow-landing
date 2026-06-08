@@ -503,11 +503,40 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
 .barnabas-hero-card{display:flex;align-items:center;gap:14px;margin-top:28px;
   background:rgba(13,21,38,0.85);border:1px solid var(--border);
   border-radius:14px;padding:12px 16px;max-width:360px;backdrop-filter:blur(8px);}
-.barnabas-hero-img-sm{width:68px;flex-shrink:0;border-radius:8px;}
+.barnabas-hero-img-sm{width:68px;flex-shrink:0;border-radius:8px;animation:barnabas-float 4s ease-in-out infinite;}
 .barnabas-section{padding:80px 7%;background:var(--navy);}
 .barnabas-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:64px;flex-wrap:wrap;}
-.barnabas-img-wrap{flex-shrink:0;width:240px;}
-.barnabas-img-wrap img{width:100%;border-radius:20px;}
+.barnabas-img-wrap{flex-shrink:0;width:240px;position:relative;}
+.barnabas-img-wrap img{width:100%;border-radius:20px;animation:barnabas-float 3.5s ease-in-out infinite;}
+
+/* Barnabas animation keyframes */
+@keyframes barnabas-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes barnabas-glow-pulse{0%,100%{opacity:.3;transform:translateX(-50%) scaleX(1)}50%{opacity:.7;transform:translateX(-50%) scaleX(1.15)}}
+@keyframes bubble-pop{0%{opacity:0;transform:scale(.75) translateY(8px)}70%{transform:scale(1.04) translateY(-2px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes cursor-blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* Ground glow */
+.barnabas-glow-ring{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
+  width:160px;height:36px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(ellipse,rgba(232,160,32,.4) 0%,transparent 70%);
+  animation:barnabas-glow-pulse 3.5s ease-in-out infinite;}
+
+/* Speech bubble */
+.barnabas-bubble{position:absolute;top:-8px;left:50%;transform:translateX(-10%);
+  background:var(--card);border:1px solid rgba(232,160,32,.4);
+  border-radius:14px 14px 14px 3px;padding:12px 16px;width:230px;z-index:10;
+  box-shadow:0 8px 28px rgba(0,0,0,.5);display:none;}
+.barnabas-bubble.visible{display:block;animation:bubble-pop .4s ease both;}
+.barnabas-bubble::after{content:'';position:absolute;bottom:-9px;left:22px;
+  border-left:9px solid transparent;border-right:9px solid transparent;
+  border-top:9px solid rgba(232,160,32,.4);}
+.barnabas-bubble::before{content:'';position:absolute;bottom:-7px;left:23px;
+  border-left:8px solid transparent;border-right:8px solid transparent;
+  border-top:8px solid var(--card);z-index:1;}
+.b-text{font-family:'Playfair Display',serif;font-size:13px;font-style:italic;
+  color:var(--white);line-height:1.55;}
+.b-cursor{display:inline-block;width:2px;height:13px;background:var(--gold);
+  margin-left:2px;vertical-align:middle;animation:cursor-blink .7s step-end infinite;}
 .barnabas-content{flex:1;min-width:280px;}
 .barnabas-traits{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 24px;}
 .btrait{padding:6px 16px;border-radius:100px;font-size:12px;font-weight:700;}
@@ -1082,8 +1111,12 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
 <!-- BARNABAS -->
 <section class="barnabas-section">
   <div class="barnabas-inner">
-    <div class="barnabas-img-wrap reveal from-left">
+    <div class="barnabas-img-wrap reveal from-left" id="barnabas-wrap">
+      <div class="barnabas-bubble" id="barnabas-bubble">
+        <span class="b-text" id="barnabas-typewriter"></span><span class="b-cursor"></span>
+      </div>
       <img src="/assets/barnabas-mascot.png" alt="Barnabas — HarvestFlow Guide">
+      <div class="barnabas-glow-ring"></div>
     </div>
     <div class="barnabas-content reveal from-right">
       <div class="stag" style="margin-bottom:12px">Your Guide</div>
@@ -1434,6 +1467,54 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (t) { t.scrollIntoView({ behavior:'smooth' }); document.getElementById('navLinks').classList.remove('open'); }
   });
 });
+
+// Barnabas typewriter
+(function(){
+  const lines = [
+    "Every soul tracked, none forgotten.",
+    "That convert hasn't been called in 9 days. Let's not lose them.",
+    "Your follow-up rate jumped 12% this week. The harvest is real.",
+    "New convert registered. I've already flagged them for 48-hour follow-up."
+  ];
+  const el = document.getElementById('barnabas-typewriter');
+  const bubble = document.getElementById('barnabas-bubble');
+  const wrap = document.getElementById('barnabas-wrap');
+  if (!el || !bubble || !wrap) return;
+
+  let lineIdx = 0, charIdx = 0, deleting = false, started = false;
+  const TYPE = 46, DEL = 22, PAUSE_AFTER = 2800, PAUSE_BEFORE = 420;
+
+  function tick() {
+    const line = lines[lineIdx];
+    if (!deleting) {
+      charIdx++;
+      el.textContent = line.slice(0, charIdx);
+      if (charIdx === line.length) { deleting = true; setTimeout(tick, PAUSE_AFTER); return; }
+    } else {
+      charIdx--;
+      el.textContent = line.slice(0, charIdx);
+      if (charIdx === 0) {
+        deleting = false;
+        lineIdx = (lineIdx + 1) % lines.length;
+        setTimeout(tick, PAUSE_BEFORE);
+        return;
+      }
+    }
+    setTimeout(tick, deleting ? DEL : TYPE);
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !started) {
+        started = true;
+        bubble.classList.add('visible');
+        setTimeout(tick, 700);
+        obs.disconnect();
+      }
+    });
+  }, { threshold: 0.35 });
+  obs.observe(wrap);
+})();
 </script>
 
 <script src="/support-widget.js" defer></script>
