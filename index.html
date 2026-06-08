@@ -498,6 +498,33 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
   .stats{flex-wrap:wrap;width:100%;}
   .stat{flex:1;min-width:120px;}
 }
+
+/* ── Barnabas ───────────────────────────────────────────────────────────── */
+.barnabas-hero-card{display:flex;align-items:center;gap:14px;margin-top:28px;
+  background:rgba(13,21,38,0.85);border:1px solid var(--border);
+  border-radius:14px;padding:12px 16px;max-width:360px;backdrop-filter:blur(8px);}
+.barnabas-hero-img-sm{width:68px;flex-shrink:0;border-radius:8px;}
+.barnabas-section{padding:80px 7%;background:var(--navy);}
+.barnabas-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:64px;flex-wrap:wrap;}
+.barnabas-img-wrap{flex-shrink:0;width:240px;}
+.barnabas-img-wrap img{width:100%;border-radius:20px;}
+.barnabas-content{flex:1;min-width:280px;}
+.barnabas-traits{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 24px;}
+.btrait{padding:6px 16px;border-radius:100px;font-size:12px;font-weight:700;}
+.btrait.enc{background:rgba(232,160,32,.12);color:#E8A020;border:1px solid rgba(232,160,32,.25);}
+.btrait.wit{background:rgba(74,222,128,.12);color:#4ADE80;border:1px solid rgba(74,222,128,.25);}
+.btrait.tec{background:rgba(96,165,250,.12);color:#60A5FA;border:1px solid rgba(96,165,250,.25);}
+.btrait.pas{background:rgba(232,121,249,.12);color:#e879f9;border:1px solid rgba(232,121,249,.25);}
+.barnabas-quote{border-left:3px solid var(--gold);padding-left:18px;margin:0 0 28px;}
+.barnabas-quote p{font-family:'Playfair Display',serif;font-size:16px;font-style:italic;color:var(--white);line-height:1.6;margin-bottom:6px;}
+.barnabas-verse{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;}
+@media(max-width:768px){
+  .barnabas-inner{flex-direction:column;align-items:center;text-align:center;}
+  .barnabas-traits{justify-content:center;}
+  .barnabas-quote{border-left:none;border-top:3px solid var(--gold);padding-left:0;padding-top:16px;}
+  .barnabas-img-wrap{width:180px;}
+  .barnabas-hero-card{max-width:100%;}
+}
 </style>
 </head>
 <body>
@@ -581,6 +608,15 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
       <div class="stat"><span class="n" id="stat-workers">0</span><span class="l">Workers</span></div>
       <div class="stat"><span class="n" id="stat-churches">0</span><span class="l">Church Live</span></div>
       <div class="stat"><span class="n">100%</span><span class="l">Free Beta</span></div>
+    </div>
+
+    <div class="barnabas-hero-card reveal">
+      <img src="/assets/barnabas-mascot.png" alt="Barnabas" class="barnabas-hero-img-sm">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Meet Your Guide</div>
+        <div style="font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--white);line-height:1.5">"Every soul tracked,<br>none forgotten."</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:5px">— Barnabas, HarvestFlow</div>
+      </div>
     </div>
   </div>
 
@@ -1039,6 +1075,31 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
     <div class="faq-item reveal" onclick="toggleFaq(this)">
       <div class="faq-q"><span>Can I import existing convert lists?</span><div class="faq-icon">+</div></div>
       <div class="faq-a"><div class="faq-a-inner">Yes. HarvestFlow supports bulk CSV import. Upload your existing spreadsheet and all your converts are in the system instantly. We also provide a template to format your data correctly.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BARNABAS -->
+<section class="barnabas-section">
+  <div class="barnabas-inner">
+    <div class="barnabas-img-wrap reveal from-left">
+      <img src="/assets/barnabas-mascot.png" alt="Barnabas — HarvestFlow Guide">
+    </div>
+    <div class="barnabas-content reveal from-right">
+      <div class="stag" style="margin-bottom:12px">Your Guide</div>
+      <h2 class="stitle">Meet Barnabas</h2>
+      <p class="ssub" style="margin-bottom:0">HarvestFlow's guide and companion. Named after the biblical Son of Encouragement — the man who followed up on Paul when no one else would. That's exactly who your converts need.</p>
+      <div class="barnabas-traits">
+        <span class="btrait enc">Encouraging</span>
+        <span class="btrait wit">Witty</span>
+        <span class="btrait tec">Tech-savvy</span>
+        <span class="btrait pas">Pastoral</span>
+      </div>
+      <div class="barnabas-quote">
+        <p>"Never let a convert slip through the cracks."</p>
+        <div class="barnabas-verse">Acts 4:36 · Son of Encouragement</div>
+      </div>
+      <a href="#register" class="btn-p" style="display:inline-flex">Let Barnabas guide your church <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left:6px"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
     </div>
   </div>
 </section>
