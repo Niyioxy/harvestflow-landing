@@ -31,6 +31,16 @@
       font-family: 'DM Sans', sans-serif;
     }
     .hf-bubble:hover { transform: scale(1.05); box-shadow: 0 16px 48px rgba(232,160,32,.5); }
+    .hf-label {
+      position: fixed; bottom: 33px; right: 88px; z-index: 999999;
+      background: ${BRAND_DARK}; color: ${BRAND_GOLD};
+      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+      padding: 5px 10px; border-radius: 20px;
+      border: 1px solid ${BRAND_BORDER};
+      white-space: nowrap; pointer-events: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,.4);
+    }
+    @media (max-width: 480px) { .hf-label { right: 78px; bottom: 22px; } }
     .hf-panel {
       position: fixed; bottom: 92px; right: 22px; z-index: 999999;
       width: 360px; max-width: calc(100vw - 44px); height: 540px;
@@ -129,7 +139,7 @@
   panel.innerHTML = `
     <div class="hf-header">
       <div>
-        <div class="hf-header-title">HarvestFlow Support</div>
+        <div class="hf-header-title">Barnabas — HarvestFlow Support</div>
         <div class="hf-header-sub">Usually replies instantly</div>
       </div>
       <button class="hf-close" aria-label="Close">✕</button>
@@ -142,6 +152,11 @@
     <div class="hf-footer">Powered by HarvestFlow</div>
   `;
 
+  const label = document.createElement("div");
+  label.className = "hf-label";
+  label.textContent = "Chat with Barnabas";
+
+  document.body.appendChild(label);
   document.body.appendChild(bubble);
   document.body.appendChild(panel);
 
@@ -251,9 +266,7 @@
     bubble.innerHTML = "✕";
     if (messages.length === 0) {
       // Greeting
-      const greeting = window.HARVESTFLOW_USER_ID
-        ? "Hi! I'm the HarvestFlow support bot. How can I help you today?"
-        : "Hi! I'm the HarvestFlow support bot. Got a question about HarvestFlow? Ask away.";
+      const greeting = "Hi! I'm Barnabas 👋 How can I help your church today?";
       messages.push({ role: "assistant", content: greeting });
       renderMessage("bot", greeting);
     }
