@@ -1413,17 +1413,18 @@ async function handleSubmit(e) {
   };
   try {
     const res = await fetch('/api/register', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
-    const result = await res.json();
+    const result = await res.json().catch(() => ({}));
     if (result.success) {
       document.getElementById('regForm').style.display = 'none';
       const nameEl = document.getElementById('successChurchName');
       if (nameEl) nameEl.textContent = data.church_name;
       document.getElementById('successMsg').style.display = 'block';
-    } else throw new Error(result.error);
+    } else throw Object.assign(new Error(result.error || ''), { fromServer: !!result.error });
   } catch(err) {
     btn.textContent = 'Register My Church →';
     btn.disabled = false;
-    alert('Something went wrong. Please email adeniyi.tosin@harvestflows.com directly.');
+    // Show the server's reason (e.g. email already registered); otherwise a generic message
+    alert(err.fromServer ? err.message : 'Something went wrong. Please email adeniyi.tosin@harvestflows.com directly.');
   }
 }
 

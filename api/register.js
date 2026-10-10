@@ -38,9 +38,23 @@ const supabaseAdmin = {
         user_metadata: { church_name: churchName },
       }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || data.error || "Failed to create user");
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const err = new Error(data.msg || data.message || data.error_description || data.error || "Failed to create user");
+      err.emailExists = res.status === 422 || data.error_code === "email_exists" || /already/i.test(err.message);
+      throw err;
+    }
     return data;
+  },
+
+  // Rollback helper: best effort, errors are logged rather than thrown
+  async remove(path) {
+    try {
+      const res = await fetch(`${SUPABASE_URL}${path}`, { method: "DELETE", headers: serviceHeaders() });
+      if (!res.ok) console.error("Rollback failed:", path, res.status, await res.text());
+    } catch (e) {
+      console.error("Rollback error:", path, e.message);
+    }
   },
 
   async generateMagicLink(email) {
@@ -74,6 +88,7 @@ const supabaseAdmin = {
         admin_name: data.admin_name,
         admin_email: data.email,
         location: data.location,
+        country: data.country || null,
         size: data.size || null,
         outreaches_per_year: data.outreaches || null,
         notes: data.notes || null,
@@ -278,7 +293,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { church_name, admin_name, phone, email, location, size, outreaches, notes } = req.body || {};
+  const { church_name, admin_name, phone, email, location, country, size, outreaches, notes } = req.body || {};
 
   // Validate required fields
   if (!church_name || !admin_name || !email || !location || !phone) {
@@ -290,26 +305,31 @@ export default async function handler(req, res) {
     return res.status(400).json({ success: false, error: "Please enter a valid email address." });
   }
 
+  // Create the login first: Supabase rejects a duplicate email before anything
+  // else exists. If a later step fails, everything created so far is removed so
+  // a retry starts clean (previously a failed sign-up left an empty church behind).
+  const created = { userId: null, churchId: null };
   try {
-    // 1. Create church record
-    const church = await supabaseAdmin.insertChurch({
-      church_name, admin_name, email, location, size, outreaches, notes,
-    });
-
-    // 2. Create admin user in Supabase Auth
+    // 1. Create admin user in Supabase Auth
     let user;
     try {
       user = await supabaseAdmin.createUser(email, church_name);
     } catch (e) {
-      // User may already exist — fetch existing
-      if (e.message?.includes("already") || e.message?.includes("duplicate") || e.message?.includes("already registered") || e.message?.includes("User already")) {
+      if (e.emailExists) {
         return res.status(409).json({
           success: false,
-          error: "An account with this email already exists. Please contact us if you need help accessing it.",
+          error: "An account with this email already exists. Please sign in instead, or contact us if you need help accessing it.",
         });
       }
       throw e;
     }
+    created.userId = user.id;
+
+    // 2. Create church record
+    const church = await supabaseAdmin.insertChurch({
+      church_name, admin_name, email, location, country, size, outreaches, notes,
+    });
+    created.churchId = church.id;
 
     // 3. Create profile record
     await supabaseAdmin.insertProfile(user.id, church.id, admin_name, email);
@@ -327,6 +347,9 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.error("Registration error:", error);
+    if (created.userId) await supabaseAdmin.remove(`/rest/v1/profiles?id=eq.${encodeURIComponent(created.userId)}`);
+    if (created.churchId) await supabaseAdmin.remove(`/rest/v1/churches?id=eq.${encodeURIComponent(created.churchId)}`);
+    if (created.userId) await supabaseAdmin.remove(`/auth/v1/admin/users/${encodeURIComponent(created.userId)}`);
     return res.status(500).json({
       success: false,
       error: "Something went wrong. Please email adeniyi.tosin@harvestflows.com directly.",
