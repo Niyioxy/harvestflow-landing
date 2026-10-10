@@ -8,7 +8,13 @@
 //   6. Return success
 
 const SUPABASE_URL = process.env.SUPABASE_URL || "https://nrmzymcechakavgyplvg.supabase.co";
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybXp5bWNlY2hha2F2Z3lwbHZnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzE0MzUzMCwiZXhwIjoyMDg4NzE5NTMwfQ.A-C_v5A0mlRDA32iXkfv7easgSx01UXlwUSPExMRT6E";
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+
+// Headers for server-side calls with the service key. New sb_secret_ keys are
+// rejected in the Authorization header, so it is only added for legacy JWT keys.
+const serviceHeaders = () => SUPABASE_SERVICE_KEY?.startsWith("eyJ")
+  ? { apikey: SUPABASE_SERVICE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY}` }
+  : { apikey: SUPABASE_SERVICE_KEY };
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const EBULKSMS_USERNAME = process.env.EBULKSMS_USERNAME;
 const EBULKSMS_APIKEY = process.env.EBULKSMS_APIKEY;
@@ -23,8 +29,7 @@ const supabaseAdmin = {
     const res = await fetch(`${SUPABASE_URL}/auth/v1/admin/users`, {
       method: "POST",
       headers: {
-        apikey: SUPABASE_SERVICE_KEY,
-        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+        ...serviceHeaders(),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -42,8 +47,7 @@ const supabaseAdmin = {
     const res = await fetch(`${SUPABASE_URL}/auth/v1/admin/generate_link`, {
       method: "POST",
       headers: {
-        apikey: SUPABASE_SERVICE_KEY,
-        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+        ...serviceHeaders(),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -61,8 +65,7 @@ const supabaseAdmin = {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/churches`, {
       method: "POST",
       headers: {
-        apikey: SUPABASE_SERVICE_KEY,
-        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+        ...serviceHeaders(),
         "Content-Type": "application/json",
         Prefer: "return=representation",
       },
@@ -86,8 +89,7 @@ const supabaseAdmin = {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/profiles`, {
     method: "POST",
     headers: {
-      apikey: SUPABASE_SERVICE_KEY,
-      Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+      ...serviceHeaders(),
       "Content-Type": "application/json",
       Prefer: "return=representation,resolution=merge-duplicates",  // ← change this line
     },

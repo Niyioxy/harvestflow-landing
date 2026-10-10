@@ -163,7 +163,10 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "messages array is required" });
     }
 
-    const userContext = userId ? await fetchUserContext(userId) : null;
+    // The userId in the request body is not authenticated, so it must not be used
+    // to read church data (anyone could pass someone else's id). Landing-page
+    // visitors aren't signed in anyway.
+    const userContext = null;
     const systemPrompt = buildSystemPrompt(userContext);
 
     // Call Claude

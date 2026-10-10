@@ -1318,8 +1318,6 @@ function dismissBanner() {
 }
 
 // Live stat counters from Supabase
-const _SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybXp5bWNlY2hha2F2Z3lwbHZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNDM1MzAsImV4cCI6MjA4ODcxOTUzMH0.5oAemUQXS8JXnxBeBgfoeJgEx0ZPu0ZPVFIrIQcXwI0';
-const _SB_SVC  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybXp5bWNlY2hha2F2Z3lwbHZnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzE0MzUzMCwiZXhwIjoyMDg4NzE5NTMwfQ.A-C_v5A0mlRDA32iXkfv7easgSx01UXlwUSPExMRT6E';
 
 function animateCount(el, target) {
   if (!el || !target) return;
@@ -1349,19 +1347,9 @@ function tryAnimateStats() {
 
 (async () => {
   try {
-    const [r1, r2, r3] = await Promise.all([
-      fetch('https://nrmzymcechakavgyplvg.supabase.co/rest/v1/converts?select=id', {
-        headers: { 'apikey': _SB_SVC, 'Authorization': 'Bearer ' + _SB_SVC, 'Prefer': 'count=exact' }
-      }),
-      fetch('https://nrmzymcechakavgyplvg.supabase.co/rest/v1/workers?select=id', {
-        headers: { 'apikey': _SB_ANON, 'Authorization': 'Bearer ' + _SB_ANON, 'Prefer': 'count=exact' }
-      }),
-      fetch('https://nrmzymcechakavgyplvg.supabase.co/rest/v1/churches?select=id', {
-        headers: { 'apikey': _SB_SVC, 'Authorization': 'Bearer ' + _SB_SVC, 'Prefer': 'count=exact' }
-      })
-    ]);
-    const [d1, d2, d3] = await Promise.all([r1.json(), r2.json(), r3.json()]);
-    _sbCounts = { converts: d1.length, workers: d2.length, churches: d3.length };
+    const r = await fetch('/api/stats');
+    if (!r.ok) return;
+    _sbCounts = await r.json();
     tryAnimateStats();
   } catch(e) {}
 })();
