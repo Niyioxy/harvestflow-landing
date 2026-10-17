@@ -24,7 +24,7 @@ church, add workers, or send messages. Future pricing will be announced before
 beta ends, and beta partners will get permanent generous pricing.
 
 ## How to register a church
-Visit landing.harvestflows.com and fill in the registration form. We set up
+Visit www.harvestflows.com and fill in the registration form. We set up
 your private workspace within 24 hours of receiving the registration. You will
 receive your login credentials by email.
 

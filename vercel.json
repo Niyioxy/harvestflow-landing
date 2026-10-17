@@ -1,8 +1,46 @@
 {
   "outputDirectory": ".",
+  "rewrites": [
+    {
+      "source": "/blog",
+      "destination": "https://harvestflow-gamma.vercel.app/blog"
+    },
+    {
+      "source": "/blog/:slug",
+      "destination": "https://harvestflow-gamma.vercel.app/blog/:slug"
+    },
+    {
+      "source": "/api/blog",
+      "destination": "https://harvestflow-gamma.vercel.app/api/blog"
+    },
+    {
+      "source": "/api/blog/:path*",
+      "destination": "https://harvestflow-gamma.vercel.app/api/blog/:path*"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "https://harvestflow-gamma.vercel.app/sitemap.xml"
+    },
+    {
+      "source": "/blog-styles.css",
+      "destination": "https://harvestflow-gamma.vercel.app/blog-styles.css"
+    },
+    {
+      "source": "/logo.svg",
+      "destination": "https://harvestflow-gamma.vercel.app/logo.svg"
+    },
+    {
+      "source": "/logo.png",
+      "destination": "https://harvestflow-gamma.vercel.app/logo.png"
+    },
+    {
+      "source": "/favicon.svg",
+      "destination": "https://harvestflow-gamma.vercel.app/favicon.svg"
+    }
+  ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/((?!blog|api/blog|sitemap.xml).*)",
       "headers": [
         {
           "key": "Content-Security-Policy",

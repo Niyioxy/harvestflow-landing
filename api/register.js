@@ -20,7 +20,7 @@ const EBULKSMS_USERNAME = process.env.EBULKSMS_USERNAME;
 const EBULKSMS_APIKEY = process.env.EBULKSMS_APIKEY;
 
 const ADENIYI_WHATSAPP = "447823782762";// Adeniyi's number in international format
-const APP_URL = "https://www.harvestflows.com";
+const APP_URL = "https://app.harvestflows.com";
 const FROM_EMAIL = "HarvestFlow <adeniyi.tosin@harvestflows.com>";
 
 // ── Supabase admin helpers ─────────────────────────────────────────────────
