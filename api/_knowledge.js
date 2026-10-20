@@ -64,10 +64,46 @@ Workers log every follow-up interaction (Call, WhatsApp, Visit, SMS) with the
 outcome and notes. The Follow-Up page shows team performance and converts who
 need contact.
 
-### SMS / WhatsApp Blast
-Admin and Super Admin users can send personalised messages to all converts in
-one click. Use [Name] in the message to personalise it. The system tries
-WhatsApp first, falls back to SMS. Powered by EbulkSMS.
+### Send an Update (WhatsApp messages)
+Admins, pastors and the super admin send personalised WhatsApp messages to
+converts, members or both from the Dashboard. [Name] becomes each person's first
+name and [Church] the church's name. Send now, schedule for one or several dates,
+repeat every week, or "Plan several messages" (a different message per date,
+written by AI or by you). Queued messages can be edited or cancelled. WhatsApp is
+tried first; SMS fallback is optional (SMS doesn't reach UK numbers).
+
+### Members, cell groups and departments
+Members with a stage (new member, full member, inactive, relocated, deceased),
+undershepherd, cell group and department; children linked to a parent. Any leader
+can head a department.
+
+### Attendance and QR self check-in
+One register per service. Leaders mark it on the Attendance page, or from My
+Flock (undershepherds), My Cell (cell leaders) and My Department (department
+heads). People can check themselves in by scanning a QR code with their phone
+camera (no app needed); a permanent poster code works for every service. If
+anyone marks someone present, they stay present. An automatic "we missed you"
+WhatsApp can go to people marked absent.
+
+### Pastoral Care
+The day after a service, each adult member marked absent gets one follow-up task
+for their undershepherd, cell leader or department head (or the pastors'
+"Not yet assigned" list), with a shared contact history. It closes itself when
+they come back.
+
+### First-timers
+Visitors fill in "First time here?" from the QR code, or an usher adds them. With
+their consent they get a WhatsApp welcome, a note 3 days later and an invitation
+before the next service; the welcome team phones them; return visits are counted
+until they join.
+
+### Barnabas in the app
+Signed-in leaders can ask Barnabas inside the app: how things work, who missed
+church, who needs a follow-up, how first-timers are doing, and he drafts
+messages. He only sees what that leader can see and never sends anything himself.
+
+### Signing in
+The app is at app.harvestflows.com (the website is www.harvestflows.com).
 
 ### Reports & CSV Export
 The Reports page shows aggregate stats and lets you download Convert Registry,
@@ -78,10 +114,12 @@ The app caches data locally so workers can view converts even without internet.
 New follow-up logs queue up and sync automatically when back online.
 
 ### Roles
-- Worker: sees only their assigned converts
-- Coordinator: manages a team
-- Admin: sees everything in the church
-- Super Admin: sees all churches (HarvestFlow team only)
+- Worker: their assigned converts; can add first-timers
+- Cell leader, Undershepherd: their own people, attendance and follow-ups
+- Coordinator, Pastor: lead the church day to day
+- Admin: everything in their own church
+- Ministry admin / General overseer: all branches of a ministry
+- Super Admin: all churches (HarvestFlow team only)
 
 ## Common troubleshooting
 
@@ -92,12 +130,13 @@ Likely causes:
 3. Network issue
 Try again in a quieter spot, holding the button for 3+ seconds.
 
-### SMS Blast says "0 sent"
+### Messages say "0 sent" or failed
 Check:
-1. The church has EbulkSMS credits loaded
-2. The sender ID is approved on EbulkSMS
-3. The message contains [Name] if you want personalisation
-4. Phone numbers are valid Nigerian format (08xxxxxxxxx or +234xxxxxxxxxx)
+1. The message was previewed, then sent or scheduled (look under Upcoming messages)
+2. Phone numbers are valid for the church's country; numbers without a + are read
+   as local numbers (e.g. 07… in the UK, 08… in Nigeria)
+3. UK numbers can only receive WhatsApp, not SMS
+4. For anything else, contact Adeniyi
 
 ### Phone numbers not personalising
 Make sure the message has [Name] (with square brackets, capital N) where you
@@ -111,9 +150,9 @@ Your session has expired. Log out and log back in to get a fresh token.
 Contact your church admin. They can reset your password from the workers page.
 If you ARE the church admin, contact Adeniyi directly.
 
-### Adding new workers
-Currently, new workers must be added by Adeniyi directly. This will become
-self-service in a future update. WhatsApp Adeniyi to add a worker.
+### Adding new workers and leaders
+A church admin invites them from People & Roles ("+ Invite User"), choosing their
+role. They receive an email to set up their login.
 
 ## Privacy & data
 - All data is stored on Supabase (PostgreSQL)
@@ -124,7 +163,6 @@ self-service in a future update. WhatsApp Adeniyi to add a worker.
 - You can export all your data as CSV at any time
 
 ## What HarvestFlow does NOT do (yet)
-- Member management (cell groups, departments, attendance) — coming soon
 - Donations / giving / tithe tracking — not planned
 - Sermon recordings or media library — not planned
 - Live streaming — not planned
@@ -136,7 +174,8 @@ self-service in a future update. WhatsApp Adeniyi to add a worker.
 - This chat: for general questions and quick answers
 
 ## The roadmap (high-level)
-- Membership Management System (cell groups, departments, attendance, undershepherds) — in design
+- Discipleship pipeline: each person's journey from first visit to serving, with alerts when someone is stuck
+- Barnabas briefings: a weekly summary for each leader of who needs care
 - Multi-language support for the UI
 - iOS / Android native apps
 - More integrations (more SMS providers, payment gateways)
