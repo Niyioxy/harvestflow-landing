@@ -47,3 +47,4 @@ footer.page{border-top:1px solid var(--border);padding:28px 6%;text-align:center
 footer.page a{margin:0 10px;color:var(--muted);}
 footer.page a:hover{color:var(--gold);}
 @media(max-width:700px){nav.top .links a:not(.btn){display:none;}.hero{padding-top:44px;}body{font-size:16px;}}
+.grid a.card{display:block;}
