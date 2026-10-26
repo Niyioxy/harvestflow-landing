@@ -158,8 +158,10 @@ role. They receive an email to set up their login.
 - All data is stored on Supabase (PostgreSQL)
 - Each church's data is isolated by Row-Level Security
 - No church can see another church's data
-- The HarvestFlow team can see anonymised aggregate metrics only
-- Data is never sold or shared with third parties
+- HarvestFlow does not sell personal data or use church data for advertising
+- Service providers process data only to run the service: Supabase (database and sign-in), Vercel (hosting), Resend (email), EbulkSMS (SMS and WhatsApp), OpenAI (voice transcription) and Anthropic (Barnabas and the support chat)
+- Churches control their own data and are responsible for having consent to record and contact people
+- Full details are in the Privacy Policy at www.harvestflows.com/privacy and the Terms at www.harvestflows.com/terms
 - You can export all your data as CSV at any time
 
 ## What HarvestFlow does NOT do (yet)
