@@ -52,7 +52,7 @@ try { if (localStorage.getItem('hf-consent') === 'yes') window.hfLoadPixel(); } 
 :root {
   --gold:#E8A020; --gold-light:#F5B84A; --gold-dim:rgba(232,160,32,0.1);
   --dark:#040C18; --navy:#060F1E; --card:#0D1526; --border:#1A2540;
-  --muted:#475569; --dim:#334155; --white:#F1F5F9;
+  --muted:#8393ab; --dim:#7a89a1; --white:#F1F5F9;
   --green:#4ADE80; --blue:#60A5FA; --purple:#A78BFA;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -64,6 +64,7 @@ body{background:var(--dark);color:var(--white);font-family:'DM Sans',sans-serif;
 
 /* ── Keyframes ─────────────────────────────────────────────────────── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(48px)}to{opacity:1;transform:translateY(0)}}
+@keyframes riseIn{from{transform:translateY(18px)}to{transform:translateY(0)}}
 @keyframes fadeLeft{from{opacity:0;transform:translateX(48px)}to{opacity:1;transform:translateX(0)}}
 @keyframes shimmer{0%{background-position:-400% center}100%{background-position:400% center}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
@@ -152,14 +153,14 @@ a.nav-register:hover{background:#E8A020;color:#000 !important;}
   background:var(--gold-dim);border:1px solid rgba(232,160,32,.2);
   padding:7px 16px;border-radius:100px;font-size:12px;color:var(--gold);
   font-weight:600;margin-bottom:24px;letter-spacing:.04em;
-  animation:fadeUp .7s ease both;}
+  animation:riseIn .6s ease both;}
 .badge-live{width:7px;height:7px;border-radius:50%;background:var(--green);
   animation:pulse 2s ease-in-out infinite;flex-shrink:0;}
 
 .hero h1{font-family:'Playfair Display',serif;
   font-size:clamp(42px,6vw,76px);font-weight:900;
   line-height:1.05;letter-spacing:-.02em;margin-bottom:22px;
-  animation:fadeUp .7s ease .1s both;}
+  animation:riseIn .6s ease both;}
 .hero h1 .line2{display:block;}
 .hero h1 .h1-kicker{display:block;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;
   letter-spacing:.08em;text-transform:uppercase;color:var(--muted);line-height:1.4;margin-bottom:14px;}
@@ -170,10 +171,10 @@ a.nav-register:hover{background:#E8A020;color:#000 !important;}
 
 .hero-sub{font-size:clamp(15px,1.8vw,18px);color:var(--muted);
   max-width:480px;line-height:1.8;font-weight:300;margin-bottom:36px;
-  animation:fadeUp .7s ease .2s both;}
+  animation:riseIn .6s ease both;}
 
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:52px;
-  animation:fadeUp .7s ease .3s both;}
+  animation:riseIn .6s ease both;}
 .btn-p{background:var(--gold);color:#000;padding:14px 28px;border-radius:10px;
   font-size:14px;font-weight:700;text-decoration:none;display:inline-flex;
   align-items:center;gap:8px;transition:all .25s;
@@ -185,7 +186,7 @@ a.nav-register:hover{background:#E8A020;color:#000 !important;}
 .btn-g:hover{border-color:var(--gold);color:var(--gold);}
 
 /* Stats - left aligned */
-.stats{display:flex;gap:0;animation:fadeUp .7s ease .4s both;
+.stats{display:flex;gap:0;animation:riseIn .6s ease both;
   border:1px solid var(--border);border-radius:14px;
   background:rgba(13,21,38,.6);backdrop-filter:blur(12px);
   overflow:hidden;width:fit-content;}
@@ -211,7 +212,7 @@ a.nav-register:hover{background:#E8A020;color:#000 !important;}
 .mockup-dots{display:flex;gap:6px;}
 .mockup-dot{width:12px;height:12px;border-radius:50%;display:block;flex-shrink:0;}
 .mockup-urlbar{flex:1;background:#0d1526;border:1px solid #1a2540;
-  border-radius:6px;padding:4px 10px;font-size:10px;color:#475569;}
+  border-radius:6px;padding:4px 10px;font-size:10px;color:var(--muted);}
 .mock-nav{background:#060F1E;padding:10px 16px;
   display:flex;align-items:center;justify-content:space-between;
   border-bottom:1px solid #1a2540;}
@@ -228,7 +229,7 @@ a.nav-register:hover{background:#E8A020;color:#000 !important;}
 .mock-stat-icon{font-size:13px;line-height:1;}
 .mock-stat-num{font-family:'Playfair Display',serif;font-size:18px;
   font-weight:900;color:#E8A020;line-height:1.1;}
-.mock-stat-label{font-size:7.5px;color:#475569;line-height:1.3;text-align:center;}
+.mock-stat-label{font-size:7.5px;color:var(--muted);line-height:1.3;text-align:center;}
 .mock-section{padding:12px 14px;border-top:1px solid #1a2540;}
 .mock-section-title{font-size:11px;font-weight:700;color:#F1F5F9;margin-bottom:10px;}
 .mock-converts{display:flex;flex-direction:column;gap:7px;}
@@ -241,7 +242,7 @@ a.nav-register:hover{background:#E8A020;color:#000 !important;}
 .mock-convert-info{flex:1;min-width:0;}
 .mock-convert-name{font-size:11px;font-weight:600;color:#F1F5F9;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.mock-convert-location{font-size:9px;color:#475569;}
+.mock-convert-location{font-size:9px;color:var(--muted);}
 .mock-badge-new{font-size:9px;font-weight:700;padding:3px 8px;
   border-radius:10px;flex-shrink:0;}
 .mock-badge-new.active{background:#052E16;color:#4ade80;}
@@ -250,7 +251,7 @@ a.nav-register:hover{background:#E8A020;color:#000 !important;}
 .mock-ms-step{display:flex;flex-direction:column;align-items:center;
   gap:4px;font-size:8.5px;flex:0 0 auto;}
 .mock-ms-step.done{color:#4ade80;}
-.mock-ms-step.pending{color:#475569;}
+.mock-ms-step.pending{color:var(--muted);}
 .mock-ms-dot{width:16px;height:16px;border-radius:50%;border:2px solid;
   display:flex;align-items:center;justify-content:center;font-size:9px;}
 .mock-ms-dot.done{background:#E8A020;border-color:#E8A020;color:#000;}
@@ -412,7 +413,7 @@ section{padding:96px 7%;}
 .pf-icon{width:44px;height:44px;border-radius:12px;background:var(--gold-dim);
   border:1px solid rgba(232,160,32,.15);display:flex;align-items:center;
   justify-content:center;font-size:18px;flex-shrink:0;}
-.pf-item h4{font-size:14px;font-weight:700;margin-bottom:4px;}
+.pf-item h3{font-size:14px;font-weight:700;margin-bottom:4px;}
 .pf-item p{font-size:12px;color:var(--muted);line-height:1.6;}
 
 /* ── CTA ───────────────────────────────────────────────────────────── */
@@ -585,7 +586,7 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
 <!-- NAV -->
 <nav id="nav">
   <a class="nav-logo" href="#home">
-    <img src="/assets/icon.svg" width="28" height="28" alt="HarvestFlow">
+    <img src="/assets/icon.svg" width="28" height="28" alt="">
     <span>HarvestFlow</span>
   </a>
   <div class="nav-links" id="navLinks">
@@ -660,7 +661,7 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
     </div>
 
     <div class="barnabas-hero-card reveal">
-      <img src="/assets/barnabas-mascot.png" alt="Barnabas" class="barnabas-hero-img-sm" width="68" height="102">
+      <img src="/assets/barnabas-mascot.webp" alt="Barnabas" class="barnabas-hero-img-sm" width="68" height="102">
       <div>
         <div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Meet Your Guide</div>
         <div style="font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--white);line-height:1.5">"Every soul tracked,<br>none forgotten."</div>
@@ -998,19 +999,19 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
       <div class="pricing-features">
         <div class="pf-item reveal">
           <div class="pf-icon">🌾</div>
-          <div><h4>Built for churches everywhere</h4><p>AI voice registration works in 50+ languages. International phone number support. SMS and WhatsApp delivery to over 180 countries.</p></div>
+          <div><h3>Built for churches everywhere</h3><p>AI voice registration works in 50+ languages. International phone number support. SMS and WhatsApp delivery to over 180 countries.</p></div>
         </div>
         <div class="pf-item reveal">
           <div class="pf-icon">🔒</div>
-          <div><h4>Your data stays yours</h4><p>Each church's data is fully isolated. No church can see another's converts. Export your data as CSV at any time.</p></div>
+          <div><h3>Your data stays yours</h3><p>Each church's data is fully isolated. No church can see another's converts. Export your data as CSV at any time.</p></div>
         </div>
         <div class="pf-item reveal">
           <div class="pf-icon">📶</div>
-          <div><h4>Works in the field</h4><p>Offline-first design means your workers can register converts even without internet, syncing automatically when back online.</p></div>
+          <div><h3>Works in the field</h3><p>Offline-first design means your workers can register converts even without internet, syncing automatically when back online.</p></div>
         </div>
         <div class="pf-item reveal">
           <div class="pf-icon">🚀</div>
-          <div><h4>Up in 24 hours</h4><p>Register today. We set up your private workspace and send your login credentials within 24 hours. No technical setup required.</p></div>
+          <div><h3>Up in 24 hours</h3><p>Register today. We set up your private workspace and send your login credentials within 24 hours. No technical setup required.</p></div>
         </div>
       </div>
     </div>
@@ -1152,7 +1153,7 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
       <div class="barnabas-bubble" id="barnabas-bubble">
         <span class="b-text" id="barnabas-typewriter"></span><span class="b-cursor"></span>
       </div>
-      <img src="/assets/barnabas-mascot.png" alt="Barnabas — HarvestFlow Guide" width="240" height="360" loading="lazy">
+      <img src="/assets/barnabas-mascot.webp" alt="Barnabas — HarvestFlow Guide" width="240" height="360" loading="lazy">
       <div class="barnabas-glow-ring"></div>
     </div>
     <div class="barnabas-content reveal from-right">
@@ -1213,7 +1214,7 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
           <div class="fg full"><label>Email Address *</label><input type="email" id="email" placeholder="admin@yourchurch.org" required></div>
           <div class="fg"><label>Church Location *</label><input type="text" id="location" placeholder="City, State" required></div>
           <div class="fg"><label>Country *</label>
-            <select id="country" required>
+            <select id="country" aria-label="Country" required>
               <option value="">Select country</option>
               <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option><option>Angola</option><option>Antigua and Barbuda</option><option>Argentina</option><option>Armenia</option><option>Australia</option><option>Austria</option><option>Azerbaijan</option>
               <option>Bahamas</option><option>Bahrain</option><option>Bangladesh</option><option>Barbados</option><option>Belarus</option><option>Belgium</option><option>Belize</option><option>Benin</option><option>Bhutan</option><option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Botswana</option><option>Brazil</option><option>Brunei</option><option>Bulgaria</option><option>Burkina Faso</option><option>Burundi</option>
@@ -1242,10 +1243,10 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
             </select>
           </div>
           <div class="fg"><label>Church Size</label>
-            <select id="size"><option value="">Select size</option><option>Under 100</option><option>100–500</option><option>500–1,000</option><option>1,000–5,000</option><option>5,000+</option></select>
+            <select id="size" aria-label="Church size"><option value="">Select size</option><option>Under 100</option><option>100–500</option><option>500–1,000</option><option>1,000–5,000</option><option>5,000+</option></select>
           </div>
           <div class="fg full"><label>Outreaches per year</label>
-            <select id="outreaches"><option value="">Select</option><option>1–2</option><option>3–5</option><option>6–10</option><option>More than 10</option></select>
+            <select id="outreaches" aria-label="Outreaches per year"><option value="">Select</option><option>1–2</option><option>3–5</option><option>6–10</option><option>More than 10</option></select>
           </div>
           <div class="fg full"><label>Anything else?</label><textarea id="notes" rows="3" placeholder="Tell us about your outreach ministry..."></textarea></div>
         </div>
@@ -1285,7 +1286,7 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
   <div class="footer-inner">
     <div>
       <div class="flogo">
-        <img src="/assets/icon.svg" width="26" height="26" alt="HarvestFlow" loading="lazy">
+        <img src="/assets/icon.svg" width="26" height="26" alt="" loading="lazy">
         <span>HarvestFlow</span>
       </div>
       <div style="font-size:13px;color:var(--muted);font-style:italic;margin-bottom:0">Sow the seed. Track the growth.</div>
