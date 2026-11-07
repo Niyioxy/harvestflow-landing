@@ -1,6 +1,14 @@
 {
   "cleanUrls": true,
   "outputDirectory": ".",
+  "redirects": [
+    {
+      "source": "/((?!api/).*)",
+      "has": [{ "type": "host", "value": "harvestflow-landing.vercel.app" }],
+      "destination": "https://www.harvestflows.com/$1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/blog",
