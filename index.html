@@ -574,6 +574,10 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
   .barnabas-hero-card{max-width:100%;}
 }
 </style>
+<!-- Visit counts (Vercel Web Analytics: no cookies) and where registrations come from -->
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/assets/source.js"></script>
 </head>
 <body>
 
@@ -1249,6 +1253,9 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 7%
           <div class="fg full"><label>Outreaches per year</label>
             <select id="outreaches" aria-label="Outreaches per year"><option value="">Select</option><option>1–2</option><option>3–5</option><option>6–10</option><option>More than 10</option></select>
           </div>
+          <div class="fg full"><label>How did you hear about HarvestFlow?</label>
+            <select id="heard_about" aria-label="How did you hear about HarvestFlow?"><option value="">Select (optional)</option><option>Google or another search engine</option><option>ChatGPT or another AI assistant</option><option>Social media</option><option>WhatsApp</option><option>A friend or another church</option><option>An event or conference</option><option>Other</option></select>
+          </div>
           <div class="fg full"><label>Anything else?</label><textarea id="notes" rows="3" placeholder="Tell us about your outreach ministry..."></textarea></div>
         </div>
         <button type="submit" class="sbtn">Register My Church →</button>
@@ -1483,6 +1490,9 @@ async function handleSubmit(e) {
     size:        document.getElementById('size').value,
     outreaches:  document.getElementById('outreaches').value,
     notes:       document.getElementById('notes').value,
+    heard_about: document.getElementById('heard_about').value,
+    signup_source:       (window.hfSource || {}).src || '',
+    signup_landing_path: (window.hfSource || {}).from || '',
   };
   try {
     const res = await fetch('/api/register', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });

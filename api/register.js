@@ -76,26 +76,39 @@ const supabaseAdmin = {
   },
 
   async insertChurch(data) {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/churches`, {
+    const row = {
+      name: data.church_name,
+      admin_name: data.admin_name,
+      admin_email: data.email,
+      location: data.location,
+      country: data.country || null,
+      size: data.size || null,
+      outreaches_per_year: data.outreaches || null,
+      notes: data.notes || null,
+      status: "active",
+    };
+    const attribution = {
+      signup_source: data.signup_source,
+      signup_landing_path: data.signup_landing_path,
+      heard_about: data.heard_about,
+    };
+    const post = body => fetch(`${SUPABASE_URL}/rest/v1/churches`, {
       method: "POST",
       headers: {
         ...serviceHeaders(),
         "Content-Type": "application/json",
         Prefer: "return=representation",
       },
-      body: JSON.stringify({
-        name: data.church_name,
-        admin_name: data.admin_name,
-        admin_email: data.email,
-        location: data.location,
-        country: data.country || null,
-        size: data.size || null,
-        outreaches_per_year: data.outreaches || null,
-        notes: data.notes || null,
-        status: "active",
-      }),
+      body: JSON.stringify(body),
     });
-    const result = await res.json();
+    let res = await post({ ...row, ...attribution });
+    let result = await res.json();
+    // Until the signup-source columns exist (PGRST204), register without them
+    if (!res.ok && result.code === "PGRST204") {
+      console.error("Signup source not saved:", result.message);
+      res = await post(row);
+      result = await res.json();
+    }
     if (!res.ok) throw new Error(result.message || "Failed to create church");
     return Array.isArray(result) ? result[0] : result;
   },
@@ -259,14 +272,15 @@ async function sendWelcomeEmail(to, adminName, churchName, magicLink) {
 }
 
 // ── Notify Adeniyi via WhatsApp ────────────────────────────────────────────
-async function notifyAdeniyi(churchName, adminName, email, location, size) {
+async function notifyAdeniyi(churchName, adminName, email, location, size, found) {
   const message =
     `🎉 New HarvestFlow Registration!\n\n` +
     `Church: ${churchName}\n` +
     `Admin: ${adminName}\n` +
     `Email: ${email}\n` +
     `Location: ${location}\n` +
-    `Size: ${size || "Not specified"}\n\n` +
+    `Size: ${size || "Not specified"}\n` +
+    `Found us: ${found || "Not known"}\n\n` +
     `Workspace has been auto-provisioned. Welcome email sent.`;
 
   try {
@@ -294,6 +308,11 @@ export default async function handler(req, res) {
   }
 
   const { church_name, admin_name, phone, email, location, country, size, outreaches, notes } = req.body || {};
+  // Where the church found us (assets/source.js and the form); short, plain text or nothing
+  const plain = (v, max) => (typeof v === "string" ? v.replace(/[^\w .:\/-]/g, "").trim().slice(0, max) : "") || null;
+  const signup_source = plain(req.body?.signup_source, 100);
+  const signup_landing_path = plain(req.body?.signup_landing_path, 200);
+  const heard_about = plain(req.body?.heard_about, 60);
 
   // Validate required fields
   if (!church_name || !admin_name || !email || !location || !phone) {
@@ -328,6 +347,7 @@ export default async function handler(req, res) {
     // 2. Create church record
     const church = await supabaseAdmin.insertChurch({
       church_name, admin_name, email, location, country, size, outreaches, notes,
+      signup_source, signup_landing_path, heard_about,
     });
     created.churchId = church.id;
 
@@ -342,7 +362,8 @@ export default async function handler(req, res) {
     await sendWelcomeEmail(email, admin_name, church_name, magicLink);
 
     // 6. Notify Adeniyi (non-blocking)
-    notifyAdeniyi(church_name, admin_name, email, location, size);
+    notifyAdeniyi(church_name, admin_name, email, location, size,
+      [heard_about, signup_source && `via ${signup_source}`, signup_landing_path && `landed on ${signup_landing_path}`].filter(Boolean).join(", "));
 
     return res.status(200).json({ success: true });
   } catch (error) {
