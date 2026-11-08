@@ -11,6 +11,14 @@
   ],
   "rewrites": [
     {
+      "source": "/rss.xml",
+      "destination": "https://harvestflow-gamma.vercel.app/api/blog?format=rss"
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "https://harvestflow-gamma.vercel.app/favicon-32.png"
+    },
+    {
       "source": "/blog",
       "destination": "https://harvestflow-gamma.vercel.app/blog"
     },
