@@ -22,11 +22,13 @@ Free for churches during the beta. Future pricing will be announced before the b
 ## Guides
 
 - [Blog: follow-up and discipleship guides for church leaders](https://www.harvestflows.com/blog)
+- [Free resources](https://www.harvestflows.com/resources): free printable PDFs, no sign-up: new convert card, first-time visitor card, 20 new convert follow-up messages, 15 visitor welcome messages, a cell group attendance register and a crusade follow-up checklist.
 
 ## Company
 
 - [About HarvestFlow and its founder](https://www.harvestflows.com/about)
 - [Pricing](https://www.harvestflows.com/pricing)
+- [Security and data protection](https://www.harvestflows.com/security): each church's data kept separate by the database, role-based access, encryption, consent for messages, export and deletion.
 - [Privacy policy](https://www.harvestflows.com/privacy)
 - [Terms](https://www.harvestflows.com/terms)
 - Contact: adeniyi.tosin@harvestflows.com
