@@ -271,7 +271,10 @@ async function sendWelcomeEmail(to, adminName, churchName, magicLink) {
   return data;
 }
 
-// ── Notify Adeniyi via WhatsApp ────────────────────────────────────────────
+// ── Notify Adeniyi by WhatsApp and email ───────────────────────────────────
+// The WhatsApp goes from the eBulkSMS-linked number, which may be Adeniyi's own,
+// so an email copy goes too. Never throws: a registration never fails over it.
+const ALERT_EMAIL = process.env.NEW_CHURCH_ALERT_EMAIL || "adeniyi.tosin@harvestflows.com";
 async function notifyAdeniyi(churchName, adminName, email, location, size, found) {
   const message =
     `🎉 New HarvestFlow Registration!\n\n` +
@@ -283,22 +286,27 @@ async function notifyAdeniyi(churchName, adminName, email, location, size, found
     `Found us: ${found || "Not known"}\n\n` +
     `Workspace has been auto-provisioned. Welcome email sent.`;
 
-  try {
-    await fetch("https://api.ebulksms.com/sendwhatsapp.json", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        WA: {
-          auth: { username: EBULKSMS_USERNAME, apikey: EBULKSMS_APIKEY },
-          message: { subject: "New Registration", messagetext: message },
-          recipients: [ADENIYI_WHATSAPP],
-        },
-      }),
-    });
-  } catch (e) {
-    // Non-fatal — don't fail the registration if notification fails
-    console.error("WhatsApp notify error:", e.message);
-  }
+  const whatsapp = fetch("https://api.ebulksms.com/sendwhatsapp.json", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      WA: {
+        auth: { username: EBULKSMS_USERNAME, apikey: EBULKSMS_APIKEY },
+        message: { subject: "New Registration", messagetext: message },
+        recipients: [ADENIYI_WHATSAPP],
+      },
+    }),
+    signal: AbortSignal.timeout(8000),
+  });
+  const mail = fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ from: FROM_EMAIL, to: ALERT_EMAIL, subject: `New church registered: ${churchName}`, text: message.replace(/^🎉 /, "") }),
+    signal: AbortSignal.timeout(8000),
+  }).then(async r => { if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`); });
+  const [wa, em] = await Promise.allSettled([whatsapp, mail]);
+  if (wa.status === "rejected") console.error("WhatsApp notify error:", wa.reason?.message);
+  if (em.status === "rejected") console.error("Email notify error:", em.reason?.message);
 }
 
 // ── Main handler ───────────────────────────────────────────────────────────
@@ -361,8 +369,9 @@ export default async function handler(req, res) {
     // 5. Send welcome email
     await sendWelcomeEmail(email, admin_name, church_name, magicLink);
 
-    // 6. Notify Adeniyi (non-blocking)
-    notifyAdeniyi(church_name, admin_name, email, location, size,
+    // 6. Notify Adeniyi. Awaited: a function can be stopped as soon as it replies,
+    // which cut unawaited alerts off. It never throws.
+    await notifyAdeniyi(church_name, admin_name, email, location, size,
       [heard_about, signup_source && `via ${signup_source}`, signup_landing_path && `landed on ${signup_landing_path}`].filter(Boolean).join(", "));
 
     return res.status(200).json({ success: true });
