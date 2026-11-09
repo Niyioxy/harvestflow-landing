@@ -31,4 +31,5 @@ Free for churches during the beta. Future pricing will be announced before the b
 - [Security and data protection](https://www.harvestflows.com/security): each church's data kept separate by the database, role-based access, encryption, consent for messages, export and deletion.
 - [Privacy policy](https://www.harvestflows.com/privacy)
 - [Terms](https://www.harvestflows.com/terms)
+- [YouTube: church follow-up training and the Keep the Harvest podcast](https://www.youtube.com/@harvestflows)
 - Contact: adeniyi.tosin@harvestflows.com
